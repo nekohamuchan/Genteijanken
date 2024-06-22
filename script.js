@@ -17,4 +17,9 @@ const getComputerChoice = () => {
     return computerChoice;
 }
 
+const getPlayerChoice = () => {
+    const playerChoice = prompt("Your choice?");
+    return playerChoice;
+}
+
 console.log();
