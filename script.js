@@ -21,8 +21,8 @@ const getComputerChoice = () => {
 }
 
 const getPlayerChoice = () => {
-    const playerChoice = prompt("Your choice?");
-    return playerChoice;
+    //const playerChoice = prompt("Your choice?");
+    //return playerChoice;
 
     //test code
     const randomInt = Math.floor(Math.random() * 3);
@@ -63,4 +63,25 @@ const playRound = (playerSelect = getPlayerChoice().toLowerCase(),
 
 }
 
-console.log(playRound());
+const playGame = () => {
+    
+    for (let i = 0; i < 5; i++) {
+        console.log(playRound());
+    }
+    
+    if (playerScore > computerScore) {
+        return `Congratulations! You are the winner! 
+        Your score: ${playerScore}
+        Computer's score: ${computerScore}`;
+    } else if (playerScore < computerScore) {
+        return `You lose! Better luck next time! 
+        Your score: ${playerScore}
+        Computer's score: ${computerScore}`;
+    } else {
+        return `It's a tie! Better luck next time! 
+        Your score: ${playerScore}
+        Computer's score: ${computerScore}`;
+    }
+}
+
+console.log(playGame());
