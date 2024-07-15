@@ -1,0 +1,263 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+@keyframes sparkle {
+    0% {opacity: 100%;}
+    50% {opacity: 0;}
+    100% {opacity: 100%;}
+}
+
+@keyframes cards {
+    0% {top: 18%; opacity: 0;}
+    50% {top: 15%; opacity: 100%;}
+}
+
+@keyframes reveal {
+    0% {opacity: 0;}
+    20%{opacity: 100%;}
+    59% {scale: 1;}
+    60% {scale: 1.2;}
+    80% {scale: 1;}
+}
+
+@keyframes down {
+    0% {top: -10%;}
+    50% {top: 0;}
+}
+
+@keyframes up {
+    0% {bottom: -10%;}
+    50% {bottom: 0;}
+}
+
+body {
+    color: white;
+    text-shadow: white 0 0 5px;
+    font-family: "Sawarabi Mincho", serif;
+}
+
+body::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url(https://www.crownperth.com.au/getmedia/ae49898c-9fc6-477a-91f5-18a0c4cc4d1e/230818-Crown-Perth-Casino-Main-Gaming-Floor-1800x1200-2.jpg?height=1199);
+    background-size: cover;
+    filter: blur(3px);
+}
+
+#kaiji {
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 500px;
+    height: 650px;
+    background: url(./imgs/kaiji.png);
+    background-size: cover;
+}
+
+/* Header */
+header {
+    position: relative;
+    z-index: 3;
+    padding: 5px 30px;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: black;
+    box-shadow: 0 5px 10px black;
+}
+
+header > * {
+    flex-shrink: 0;
+}
+
+ul {
+    display: flex;
+    align-items: center;
+    padding: 0 ;
+    gap: 25px;
+    list-style-type: none;
+    font-size: 24px;
+}
+
+.link:hover {
+    text-shadow: red 0 0 5px;;
+    color: red;
+    transition: 0.1s;
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+/* Life section */
+.life-container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 10px;
+    padding: 15px 0;
+    margin: 0 auto;
+    width: 90vw;
+    height: calc(((100vh - var(--header-height)) * 0.65) * 0.5);
+}
+
+#player-lp {
+    justify-content: end;
+    align-items: end;
+}
+
+.life-point {
+    width: 45px;
+    height: 45px;
+    background-color: red;
+}
+
+/* Text box */
+.text-box-section {
+    position: relative;
+    height: calc((100vh - var(--header-height)) * 0.35);
+}
+
+#text-box {
+    margin: auto;
+    width: 90vw;
+    height: 90%;
+    border: 3px double white;
+    background-color: rgba(0, 0, 0, 70%);
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#text-box:hover {
+    cursor: pointer;
+}
+
+#text-box > p {
+    width: 90%;
+    height: 80%;
+}
+
+.sparkle {
+    margin-left: 5px;
+    font-size: 20px;
+    animation-name: sparkle;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+/* Card section */
+.choice-cards {
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    right: 0;
+    top: 15%;
+    margin: 5% 0;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    gap: 3%;
+    align-items: center;
+    animation-name: cards;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+}
+
+.card {
+    flex-shrink: 0;
+    width: 210px;
+    height: 300px;
+    background-color: white;
+    border: 1px solid blue;
+    border-radius: 10px;
+}
+
+.rock {
+    background: url(./imgs/rock.jpg);
+    background-size: cover;
+}
+
+.paper {
+    background: url(./imgs/paper.jpg);
+    background-size: cover;
+}
+
+.scissors {
+    background: url(./imgs/scissors.jpg);
+    background-size: cover;
+}
+
+.choice-cards > *:hover {
+    scale: 1.05;
+    transition: 0.1s;
+    cursor: pointer;
+}
+
+.reveal-cards {
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    right: 0;
+    top: 10%;
+    margin: 8% 0;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 35%;
+}
+
+#kaiji-card {
+    position: relative;
+    animation-name: reveal, down;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+}
+
+#player-card {
+    position: relative;
+    animation-name: reveal, up;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+}
+
+/* Others */
+.hidden {
+    display: none;
+}
+
+@media screen and (max-width: 720px) {  
+    .card {
+        width: 150px;
+        height: 210px;;
+    }
+
+    .choice-cards {
+        margin: 10% 0;
+    }
+
+    .reveal-cards {
+        margin: 15% 0;
+    }
+}
+
+@media screen and (max-height: 700px) {
+    .card {
+        width: 150px;
+        height: 210px;;
+    }
+}
+
+

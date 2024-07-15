@@ -1,2 +1,2 @@
-# Janken-with-Kaiji
+# 限定ジャンケン-Genteijanken
 A rock paper scissors game for TOP curriculum

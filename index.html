@@ -4,10 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles.css">
-    <title>Janken with Kaiji</title>
+    
+    <title>限定ジャンケン Genteijanken</title>
 </head>
 <body>
-    
+    <main>
+
+        <div id="kaiji"></div>
+
+        <header>
+            <h1><span lang="ja">限定ジャンケン</span> Genteijanken</h1>
+            <ul>
+                <li class="link">About</li>
+                <li class="link">Restart</li>
+                <li class="link"><span lang="ja">日本語</span></li>
+            </ul>
+        </header>
+
+        <!--Life section-->
+        <div id="kaiji-lp" class="life-container">
+            <div class="life-point"></div>
+            <div class="life-point"></div>
+            <div class="life-point"></div>
+        </div>
+
+        <div id="player-lp" class="life-container">
+            <div class="life-point"></div>
+            <div class="life-point"></div>
+            <div class="life-point"></div>
+        </div>
+
+        <!--Text box-->
+        <div class="text-box-section">
+            <div id="text-box">
+                <p>
+                    Welcome. Click to process.<span class="sparkle">▼</span>
+                </p>
+            </div>
+        </div>
+
+        <!--Card section-->
+        <div id="player-choice" class="choice-cards hidden">
+            <div id="rock" class="card rock"></div>
+            <div id="paper" class="card paper"></div>
+            <div id="scissors" class="card scissors"></div>
+        </div>
+
+        <div id="reveal-cards" class="reveal-cards hidden">
+            <div id="kaiji-card" class="card"></div><!--to do-->
+            <div id="player-card" class="card"></div>
+        </div>
+        
+        <!--Game screen section-->
+        <div class="restart">
+
+        </div>
+
+    </main>
+
     <script src="./script.js"></script>
 
 </body>

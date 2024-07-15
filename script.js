@@ -1,3 +1,17 @@
+//el height
+let headerH = document.querySelector('header').offsetHeight;
+const root = document.documentElement;
+root.style.setProperty('--header-height', headerH + 'px');
+
+
+window.addEventListener('resize', () => {
+    headerH = document.querySelector('header').offsetHeight;
+    root.style.setProperty('--header-height', headerH + 'px');
+})
+
+
+/*
+//main
 let computerScore = 0;
 let playerScore = 0;
 
@@ -85,3 +99,4 @@ const playGame = () => {
 }
 
 console.log(playGame());
+*/
