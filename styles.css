@@ -4,6 +4,11 @@
     margin: 0;
 }
 
+@keyframes start {
+    0%, 10% {display: block; height: 100%;}
+    100% {display: none; height: 0;}
+}
+
 @keyframes sparkle {
     0% {opacity: 100%;}
     50% {opacity: 0;}
@@ -31,6 +36,17 @@
 @keyframes up {
     0% {bottom: -10%;}
     50% {bottom: 0;}
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    z-index: 5;
+    width: 100%;
+    background-color: black;
+    box-shadow: 0 20px 20px black;
+    animation-name: start;
+    animation-duration: 1.8s;
 }
 
 body {
