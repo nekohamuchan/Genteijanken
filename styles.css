@@ -5,8 +5,8 @@
 }
 
 @keyframes start {
-    0%, 10% {display: block; height: 100%;}
-    100% {display: none; height: 0;}
+    0%, 10% {opacity: 100%; height: 100%;}
+    100% {opacity: 0; height: 100%;}
 }
 
 @keyframes sparkle {
@@ -44,7 +44,6 @@ body::before {
     z-index: 5;
     width: 100%;
     background-color: black;
-    box-shadow: 0 20px 20px black;
     animation-name: start;
     animation-duration: 1.8s;
 }

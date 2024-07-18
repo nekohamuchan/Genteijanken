@@ -9,6 +9,35 @@ window.addEventListener('resize', () => {
     root.style.setProperty('--header-height', headerH + 'px');
 })
 
+//text
+const textBox = document.getElementById('text-box');
+const text = document.getElementById('text');
+
+const textContent1 = [
+    {
+        id: 1,
+        content: "this is 1"
+    },
+    {
+        id: 2,
+        content: "this is 2"
+    },
+    {
+        id: 3,
+        content: "this is 3"
+    },
+];
+
+let textLine = 0;
+const nextText = (contents) => {   
+    text.textContent = contents[textLine].content;
+    textLine++;
+}
+
+textBox.onclick = () => {
+    nextText(textContent1);
+
+}
 
 /*
 //main
