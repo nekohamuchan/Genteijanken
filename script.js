@@ -12,6 +12,7 @@ window.addEventListener('resize', () => {
 //text
 const textBox = document.getElementById('text-box');
 const text = document.getElementById('text');
+const textEnd = document.querySelector('.sparkle');
 
 const textContent1 = [
     {
@@ -27,6 +28,21 @@ const textContent1 = [
         content: "this is 3"
     },
 ];
+
+const typeText = (msg) => {
+    textEnd.style.display = 'none';
+    for (let i = 0; i < msg.length; i++) {
+        setTimeout(() => {
+            text.textContent += msg[i];
+            if (i === msg.length - 1) {
+                textEnd.style.display = 'inline';
+            }
+        }, i * 50); 
+    } 
+}
+
+const startMsg = 'Welcome. Click to process.';
+typeText(startMsg);
 
 let textLine = 0;
 const nextText = (contents) => {   
