@@ -8,6 +8,15 @@ window.addEventListener('resize', () => {
     root.style.setProperty('--header-height', headerH + 'px');
 })
 
+//show start screen after page onload
+const startScreen = document.querySelector('.start-screen');
+window.onload = () => {
+    startScreen.style.animationName = 'start';
+    setTimeout(() => {
+        startScreen.style.display = 'none';
+    }, 1800);
+}
+
 //text
 const textBox = document.getElementById('text-box');
 const text = document.getElementById('text');
@@ -34,6 +43,10 @@ const textContents = [
     {
         id: 5,
         content: "Game start!"
+    },
+    {
+        id: 6,
+        content: "Choose your card"
     },
 ];
 
@@ -64,17 +77,24 @@ const nextText = (contents) => {
 
 text.textContent = textContents[0].content;
 
+//cards
+const cardChoices = document.getElementById('player-choice');
+const choiceReg = /Choose your card/;
+text.addEventListener('change', () => {
+    console.log('is changing');
+})
+
 //input function
 textBox.addEventListener('click', () => {
     if (text.textContent === textContents[textLine].content) {
         nextText(textContents);
-        return;
     } else {
         clearInterval(window.timeId1);
         text.textContent = textContents[textLine].content;
         textEnd.style.display = 'inline';
         return;
-    };  
+    };
+
 });
 
 window.addEventListener('keydown', (e) => {

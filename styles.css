@@ -77,8 +77,10 @@ body::after {
     position: absolute;
     z-index: 5;
     width: 100%;
+    height: 100%;
     background-color: black;
-    animation-name: start;
+    animation-name: none;
+    animation-fill-mode: forwards;
     animation-duration: 1.8s;
 }
 
