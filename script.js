@@ -46,7 +46,19 @@ const playerCard = document.getElementById('player-card');
 
 let kaijiChoice = '';//work here
 const getKaijiChoice = () => {
-
+    let i = Math.floor(Math.random() * 3);
+    switch (i) {
+        case 0:
+            kaijiChoice = 'rock';
+            break;
+        case 1:
+            kaijiChoice = 'paper';
+            break;
+        case 2:
+            kaijiChoice = 'scissors';
+            break;
+    }
+    return;
 };
 
 let isRevealShowing = false;
@@ -216,6 +228,7 @@ window.addEventListener('keydown', (e) => {
     switch (e.key) {
         case 'Enter':
             game();
+            getKaijiChoice();
             break;
     }
 });
