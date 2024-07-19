@@ -134,7 +134,8 @@ ul {
 .life-point {
     width: 45px;
     height: 45px;
-    background-color: red;
+    background: url(https://png.pngtree.com/png-vector/20231107/ourmid/pngtree-goldan-3d-star-emoji-icon-png-image_10459560.png);
+    background-size: cover;
 }
 
 /* Text box */

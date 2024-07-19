@@ -3,7 +3,6 @@ let headerH = document.querySelector('header').offsetHeight;
 const root = document.documentElement;
 root.style.setProperty('--header-height', headerH + 'px');
 
-
 window.addEventListener('resize', () => {
     headerH = document.querySelector('header').offsetHeight;
     root.style.setProperty('--header-height', headerH + 'px');
@@ -14,10 +13,10 @@ const textBox = document.getElementById('text-box');
 const text = document.getElementById('text');
 const textEnd = document.querySelector('.sparkle');
 
-const textContent1 = [
+const textContents = [
     {
         id: 1,
-        content: "this is 1"
+        content: "Welcome. Click to process."
     },
     {
         id: 2,
@@ -27,33 +26,65 @@ const textContent1 = [
         id: 3,
         content: "this is 3"
     },
+    {
+        id: 4,
+        content: "this is 4"
+    },
+    {
+        id: 5,
+        content: "this is 5"
+    },
 ];
 
 const typeText = (msg) => {
     textEnd.style.display = 'none';
-    for (let i = 0; i < msg.length; i++) {
-        setTimeout(() => {
-            text.textContent += msg[i];
-            if (i === msg.length - 1) {
-                textEnd.style.display = 'inline';
-            }
-        }, i * 50); 
-    } 
+    let i = 0;
+    window.timeId1 = setInterval(msg => {
+        if (i === msg.length) {
+            clearInterval(window.timeId1);
+            textEnd.style.display = 'inline';
+            return;
+        }
+        text.textContent += msg[i++];
+    }, 50, msg);
 }
-
-const startMsg = 'Welcome. Click to process.';
-typeText(startMsg);
 
 let textLine = 0;
-const nextText = (contents) => {   
-    text.textContent = contents[textLine].content;
-    textLine++;
+const nextText = (contents) => {
+    if (textLine === contents.length - 1) {
+        return;
+    } else {
+        text.textContent = '';
+        textLine++;
+        typeText(contents[textLine].content);
+        return;
+    }   
 }
 
-textBox.onclick = () => {
-    nextText(textContent1);
+text.textContent = textContents[0].content;
 
-}
+textBox.addEventListener('click', () => {
+    if (text.textContent === textContents[textLine].content) {
+        nextText(textContents);
+        return;
+    } else {
+        clearInterval(window.timeId1);
+        text.textContent = textContents[textLine].content;
+        textEnd.style.display = 'inline';
+        return;
+    };  
+});
+
+window.addEventListener('keydown', (e) => {
+    switch (e.key) {
+        case 'Enter':
+            
+            break;
+    }
+})
+
+
+
 
 /*
 //main
