@@ -71,13 +71,16 @@ const textContents = [
     },
 ];
 
+let isAllType = true;
 const typeText = (msg) => {
     textEnd.style.display = 'none';
+    isAllType = false;
     let i = 0;
     window.timeId1 = setInterval(msg => {
         if (i === msg.length) {
             clearInterval(window.timeId1);
             textEnd.style.display = 'inline';
+            isAllType = true;
             return;
         }
         text.textContent += msg[i++];
@@ -101,12 +104,13 @@ text.textContent = textContents[0].content;
 
 const game = () => {
     if (!isCardsShowing) {
-        if (text.textContent === textContents[textLine].content) {
+        if (text.textContent === textContents[textLine].content && isAllType) {
             nextText(textContents);
         } else {
             clearInterval(window.timeId1);
             text.textContent = textContents[textLine].content;
             textEnd.style.display = 'inline';
+            isAllType = true;
             return;
         };
     } else {
