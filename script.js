@@ -8,14 +8,24 @@ window.addEventListener('resize', () => {
     root.style.setProperty('--header-height', headerH + 'px');
 })
 
-//show start screen after page onload
+//audios
+const bgm = new Audio('./sounds/Espoir.mp3');
+bgm.volume = 0.2;
+bgm.loop = true;
+const txtSFX = new Audio('./sounds/text-scroll-1.mp3');
+txtSFX.loop = true;
+
+//after page onload
 const startScreen = document.querySelector('.start');
 window.onload = () => {
     startScreen.style.animationName = 'start';
     setTimeout(() => {
         startScreen.style.display = 'none';
     }, 1700);
+
+    bgm.play();
 }
+
 
 //cards
 const cardChoicesSection = document.getElementById('player-choices');
@@ -44,7 +54,7 @@ cardChoices.forEach(choice => {
 const kaijiCard = document.getElementById('kaiji-card');
 const playerCard = document.getElementById('player-card');
 
-let kaijiChoice = '';//work here
+let kaijiChoice = '';
 const getKaijiChoice = () => {
     let i = Math.floor(Math.random() * 3);
     switch (i) {
@@ -59,7 +69,7 @@ const getKaijiChoice = () => {
             break;
     }
     return;
-};
+};// work here
 
 let isRevealShowing = false;
 const revealChoices = document.getElementById('reveal-cards');
@@ -148,7 +158,7 @@ const txtJap = [
     },
     {
         id: 8,
-        content: "オープン"
+        content: "オープン!"
     },
     {
         id: 9,
@@ -159,19 +169,23 @@ const txtJap = [
 let textContents = txtEng;
 
 let isAllType = true;
+let typeSpeed = 30;
 const typeText = (msg) => {
     textEnd.style.display = 'none';
     isAllType = false;
     let i = 0;
+    txtSFX.play();
     window.txtTyping = setInterval(msg => {
         if (i === msg.length) {
             clearInterval(window.txtTyping);
             textEnd.style.display = 'inline';
+            txtSFX.pause();
+            txtSFX.currentTime = 0;
             isAllType = true;
             return;
         };
         text.textContent += msg[i++];
-    }, 30, msg);
+    }, typeSpeed, msg);
 };
 
 //textLine + 1 = textContents id
@@ -198,6 +212,8 @@ const game = () => {
             text.textContent = textContents[textLine].content;
             textEnd.style.display = 'inline';
             isAllType = true;
+            txtSFX.pause();
+            txtSFX.currentTime = 0;
             return;
         };
     } else {
@@ -230,6 +246,10 @@ window.addEventListener('keydown', (e) => {
             game();
             getKaijiChoice();
             break;
+        case ' ':
+            console.log('test', document.querySelector('html').getAttribute('lang'));
+            
+            break;
     }
 });
 
@@ -237,6 +257,9 @@ window.addEventListener('keydown', (e) => {
 const aboutBtn = document.getElementById('aboutBtn');
 const restartBtn = document.getElementById('restartBtn');
 const langBtn = document.getElementById('langBtn');
+const bgmBtn = document.getElementById('bgmBtn');
+const bgmIcon = document.getElementById('bgmIcon');
+let isBgmPlaying = true;
 
 restartBtn.addEventListener('click', () => {
     location.reload();
@@ -251,6 +274,9 @@ langBtn.addEventListener('click', () => {
         langBtn.textContent = 'English';
         restartBtn.textContent = 'リスタート';
         aboutBtn.textContent = '概要';
+        document.querySelector('html').setAttribute('lang', 'ja');
+
+        typeSpeed = 60;
         textContents = txtJap;
         typeText(textContents[textLine].content);
 
@@ -259,7 +285,27 @@ langBtn.addEventListener('click', () => {
         langBtn.textContent = '日本語';
         restartBtn.textContent = 'Restart';
         aboutBtn.textContent = 'About';
+        document.querySelector('html').setAttribute('lang', 'en');
+
+        typeSpeed = 30;
         textContents = txtEng;
         typeText(textContents[textLine].content);
     }
 });
+
+bgmBtn.addEventListener('click', () => {
+    if (isBgmPlaying) {
+        bgm.pause();
+        bgm.currentTime = 0;
+        bgmIcon.classList.remove('fa-volume-high');
+        bgmIcon.classList.add('fa-volume-xmark');
+        isBgmPlaying = false;
+
+    } else {
+        bgm.play();
+        bgmIcon.classList.remove('fa-volume-xmark');
+        bgmIcon.classList.add('fa-volume-high');
+        isBgmPlaying = true;
+
+    }
+})

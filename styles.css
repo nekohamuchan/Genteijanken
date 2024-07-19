@@ -43,6 +43,10 @@
     50% {bottom: 0;}
 }
 
+html {
+    font-feature-settings: 'locl' 0;
+}
+
 ::selection {
     background: red;
   }
@@ -135,8 +139,8 @@ header > * {
 ul {
     display: flex;
     align-items: center;
-    padding: 0 ;
-    gap: 25px;
+    padding: 0;
+    gap: 20px;
     list-style-type: none;
     font-size: 24px;
 }
