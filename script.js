@@ -20,7 +20,6 @@ window.onload = () => {
 //cards
 const cardChoicesSection = document.getElementById('player-choices');
 const cardChoices = document.querySelectorAll('#player-choices > *');
-const showChoicesReg = /Choose your card./;
 
 let isCardsShowing = false;
 const darkenScreen = document.querySelector('.darken');
@@ -42,9 +41,16 @@ cardChoices.forEach(choice => {
     })
 });
 
+const kaijiCard = document.getElementById('kaiji-card');
+const playerCard = document.getElementById('player-card');
+
+let kaijiChoice = '';//work here
+const getKaijiChoice = () => {
+
+};
+
 let isRevealShowing = false;
 const revealChoices = document.getElementById('reveal-cards');
-const revealChoicesReg = /Open!/;
 const showReveal = () => {
     revealChoices.classList.toggle('hidden');
     textBox.style.pointerEvents = "none";
@@ -61,8 +67,7 @@ const textBox = document.getElementById('text-box');
 const text = document.getElementById('text');
 const textEnd = document.querySelector('.sparkle');
 
-let option;
-const textContents = [
+const txtEng = [
     {
         id: 1,
         content: "Welcome. Click or press enter to progress."
@@ -100,22 +105,62 @@ const textContents = [
         content: "Cards should dissapear"
     },
 ];
+const txtJap = [
+    {
+        id: 1,
+        content: "ようこそ。 クリックするか、Enterを押して先に進みます。"
+    },
+    {
+        id: 2,
+        content: "これは限定じゃんけんです。基本的にはじゃんけんですが、ライフと制限カードがあります。"
+    },
+    {
+        id: 3,
+        content: "右下の星はあなたの命です。星を全て失うとゲームオーバーです。"
+    },
+    {
+        id: 4,
+        content: "カイジと競争してゲームに勝利しよう！"
+    },
+    {
+        id: 5,
+        content: "ゲーム開始！"
+    },
+    {
+        id: 6,
+        content: "カードを選択してください。"
+    },
+    {
+        id: 7,
+        content: "セット"
+    },
+    {
+        id: 8,
+        content: "オープン"
+    },
+    {
+        id: 9,
+        content: "カードは消えるはずだ"
+    },
+];
+
+let textContents = txtEng;
 
 let isAllType = true;
 const typeText = (msg) => {
     textEnd.style.display = 'none';
     isAllType = false;
     let i = 0;
-    window.timeId1 = setInterval(msg => {
+    window.txtTyping = setInterval(msg => {
         if (i === msg.length) {
-            clearInterval(window.timeId1);
+            clearInterval(window.txtTyping);
             textEnd.style.display = 'inline';
             isAllType = true;
             return;
-        }
+        };
         text.textContent += msg[i++];
     }, 30, msg);
-}
+};
 
 //textLine + 1 = textContents id
 let textLine = 0;
@@ -124,11 +169,10 @@ const nextText = (contents) => {
         return;
     } else {
         text.textContent = '';
-
         typeText(contents[++textLine].content);
         return;
-    }   
-}
+    }; 
+};
 
 //first msg
 text.textContent = textContents[0].content;
@@ -138,7 +182,7 @@ const game = () => {
         if (text.textContent === textContents[textLine].content && isAllType) {
             nextText(textContents);
         } else {
-            clearInterval(window.timeId1);
+            clearInterval(window.txtTyping);
             text.textContent = textContents[textLine].content;
             textEnd.style.display = 'inline';
             isAllType = true;
@@ -149,20 +193,20 @@ const game = () => {
     };
 
     //show card choices
-    if (showChoicesReg.test(textContents[textLine].content)) {
+    if (textLine === 5) {
         showChoices();
         return;
     };
 
-    if (revealChoicesReg.test(textContents[textLine].content)) {
+    if (textLine === 7) {
         showReveal();
         return;
     };
 
     if (isRevealShowing) {
         revealChoices.classList.toggle('hidden');
-    }
-}
+    };
+};
 
 //input function
 textBox.addEventListener('click', game);
@@ -173,13 +217,35 @@ window.addEventListener('keydown', (e) => {
             game();
             break;
     }
-})
+});
 
-//header button
+//header buttons
 const aboutBtn = document.getElementById('aboutBtn');
 const restartBtn = document.getElementById('restartBtn');
 const langBtn = document.getElementById('langBtn');
 
 restartBtn.addEventListener('click', () => {
     location.reload();
-})
+});
+
+langBtn.addEventListener('click', () => {
+    clearInterval(window.txtTyping);
+    text.textContent = '';
+
+    if (langBtn.textContent === '日本語') {
+        //change to Eng
+        langBtn.textContent = 'English';
+        restartBtn.textContent = 'リスタート';
+        aboutBtn.textContent = '概要';
+        textContents = txtJap;
+        typeText(textContents[textLine].content);
+
+    } else if (langBtn.textContent === 'English') {
+        //change to Jap
+        langBtn.textContent = '日本語';
+        restartBtn.textContent = 'Restart';
+        aboutBtn.textContent = 'About';
+        textContents = txtEng;
+        typeText(textContents[textLine].content);
+    }
+});
