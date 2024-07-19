@@ -17,6 +17,13 @@ window.onload = () => {
     }, 1800);
 }
 
+//cards
+const cardChoices = document.getElementById('player-choice');
+const showChoicesReg = /Choose your card/;
+const showChoices = () => {
+    cardChoices.classList.toggle('hidden');
+};
+
 //text
 const textBox = document.getElementById('text-box');
 const text = document.getElementById('text');
@@ -57,6 +64,11 @@ const typeText = (msg) => {
         if (i === msg.length) {
             clearInterval(window.timeId1);
             textEnd.style.display = 'inline';
+
+            //show card choices after typing at the right text
+            if (showChoicesReg.test(text.textContent)) {
+                showChoices();
+            }
             return;
         }
         text.textContent += msg[i++];
@@ -77,12 +89,7 @@ const nextText = (contents) => {
 
 text.textContent = textContents[0].content;
 
-//cards
-const cardChoices = document.getElementById('player-choice');
-const choiceReg = /Choose your card/;
-text.addEventListener('change', () => {
-    console.log('is changing');
-})
+
 
 //input function
 textBox.addEventListener('click', () => {

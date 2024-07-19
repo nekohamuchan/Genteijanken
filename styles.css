@@ -244,6 +244,10 @@ ul {
     cursor: pointer;
 }
 
+.choice-cards > *:active {
+    scale: 1.01;
+}
+
 .reveal-cards {
     position: fixed;
     z-index: 2;
