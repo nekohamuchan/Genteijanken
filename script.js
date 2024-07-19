@@ -8,11 +8,14 @@ window.addEventListener('resize', () => {
     root.style.setProperty('--header-height', headerH + 'px');
 })
 
+//header button
+
 //text
 const textBox = document.getElementById('text-box');
 const text = document.getElementById('text');
 const textEnd = document.querySelector('.sparkle');
 
+let option;
 const textContents = [
     {
         id: 1,
@@ -20,19 +23,19 @@ const textContents = [
     },
     {
         id: 2,
-        content: "this is 2"
+        content: "This is Genteijanken. It's basically rock, paper, scissors but with lives and limit cards."
     },
     {
         id: 3,
-        content: "this is 3"
+        content: "The right-bottom stars is your lives. Game over if you lose all of your stars."
     },
     {
         id: 4,
-        content: "this is 4"
+        content: "Try to compete Kaiji and win the game!"
     },
     {
         id: 5,
-        content: "this is 5"
+        content: "Game start!"
     },
 ];
 
@@ -46,7 +49,7 @@ const typeText = (msg) => {
             return;
         }
         text.textContent += msg[i++];
-    }, 50, msg);
+    }, 30, msg);
 }
 
 let textLine = 0;
@@ -55,14 +58,15 @@ const nextText = (contents) => {
         return;
     } else {
         text.textContent = '';
-        textLine++;
-        typeText(contents[textLine].content);
+
+        typeText(contents[++textLine].content);
         return;
     }   
 }
 
 text.textContent = textContents[0].content;
 
+//input function
 textBox.addEventListener('click', () => {
     if (text.textContent === textContents[textLine].content) {
         nextText(textContents);

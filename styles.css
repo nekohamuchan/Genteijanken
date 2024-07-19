@@ -38,6 +38,10 @@
     50% {bottom: 0;}
 }
 
+::selection {
+    background: red;
+  }
+
 body::before {
     content: "";
     position: absolute;
