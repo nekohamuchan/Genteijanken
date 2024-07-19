@@ -42,11 +42,18 @@ cardChoices.forEach(choice => {
     })
 });
 
+let isRevealShowing = false;
 const revealChoices = document.getElementById('reveal-cards');
 const revealChoicesReg = /Open!/;
 const showReveal = () => {
     revealChoices.classList.toggle('hidden');
+    textBox.style.pointerEvents = "none";
     isCardsShowing = true;
+    isRevealShowing = true;
+    setTimeout(() => {
+        textBox.style.pointerEvents = "auto";
+        isCardsShowing = false;
+    }, 2300)
 };
 
 //text
@@ -87,6 +94,10 @@ const textContents = [
     {
         id: 8,
         content: "Open!"
+    },
+    {
+        id: 9,
+        content: "Cards should dissapear"
     },
 ];
 
@@ -135,17 +146,21 @@ const game = () => {
         };
     } else {
         return;
-    }
+    };
 
     //show card choices
     if (showChoicesReg.test(textContents[textLine].content)) {
         showChoices();
         return;
-    }
+    };
 
     if (revealChoicesReg.test(textContents[textLine].content)) {
         showReveal();
         return;
+    };
+
+    if (isRevealShowing) {
+        revealChoices.classList.toggle('hidden');
     }
 }
 
