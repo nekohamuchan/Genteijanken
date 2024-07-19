@@ -205,6 +205,7 @@ const game = () => {
 
     if (isRevealShowing) {
         revealChoices.classList.toggle('hidden');
+        isRevealShowing = false;
     };
 };
 

@@ -155,7 +155,6 @@ ul {
 
 /* Life section */
 .life-container {
-    position: relative;
     display: flex;
     gap: 10px;
     padding: 15px 0;
@@ -170,11 +169,14 @@ ul {
 }
 
 .life-point {
+    position: relative;
+    z-index: 0;
     width: 45px;
     height: 45px;
     background: url(https://png.pngtree.com/png-vector/20231107/ourmid/pngtree-goldan-3d-star-emoji-icon-png-image_10459560.png);
     background-size: cover;
     scale: 1.3;
+    filter: drop-shadow(0 0 4px black);
 }
 
 /* Text box */
@@ -236,6 +238,7 @@ ul {
     background-color: white;
     border: 1px solid white;
     border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 .rock {
