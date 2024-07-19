@@ -9,7 +9,7 @@ window.addEventListener('resize', () => {
 })
 
 //show start screen after page onload
-const startScreen = document.querySelector('.start-screen');
+const startScreen = document.querySelector('.start');
 window.onload = () => {
     startScreen.style.animationName = 'start';
     setTimeout(() => {
@@ -19,9 +19,12 @@ window.onload = () => {
 
 //cards
 const cardChoices = document.getElementById('player-choice');
-const showChoicesReg = /Choose your card/;
+const showChoicesReg = /Choose your card./;
+
+const darkenScreen = document.querySelector('.darken');
 const showChoices = () => {
     cardChoices.classList.toggle('hidden');
+    darkenScreen.classList.toggle('hidden');
 };
 
 //text
@@ -53,7 +56,7 @@ const textContents = [
     },
     {
         id: 6,
-        content: "Choose your card"
+        content: "Choose your card."
     },
 ];
 

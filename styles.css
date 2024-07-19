@@ -9,6 +9,11 @@
     100% {opacity: 0; height: 100%;}
 }
 
+@keyframes darken {
+    0% {opacity: 0;}
+    100% {opacity: 60%;}
+}
+
 @keyframes sparkle {
     0% {opacity: 100%;}
     50% {opacity: 0;}
@@ -16,8 +21,8 @@
 }
 
 @keyframes cards {
-    0% {top: 18%; opacity: 0;}
-    50% {top: 15%; opacity: 100%;}
+    0% {padding-top: 180px; opacity: 0;}
+    50% {padding-top: 150px; opacity: 100%;}
 }
 
 @keyframes reveal {
@@ -69,19 +74,31 @@ body::after {
     height: 100vh;
     background-image: url(https://www.crownperth.com.au/getmedia/ae49898c-9fc6-477a-91f5-18a0c4cc4d1e/230818-Crown-Perth-Casino-Main-Gaming-Floor-1800x1200-2.jpg?height=1199);
     background-size: cover;
+    background-position: center;
     scale: 1.05;
-    filter: blur(3px);
+    filter: blur(2px);
 }
 
-.start-screen {
+/* Screens */
+.start {
     position: absolute;
     z-index: 5;
     width: 100%;
     height: 100%;
     background-color: black;
-    animation-name: none;
     animation-fill-mode: forwards;
     animation-duration: 1.8s;
+}
+
+.darken {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    animation-name: darken;
+    animation-fill-mode: forwards;
+    animation-duration: 1s;
 }
 
 #kaiji {
@@ -139,12 +156,11 @@ ul {
 /* Life section */
 .life-container {
     position: relative;
-    z-index: 1;
     display: flex;
     gap: 10px;
     padding: 15px 0;
     margin: 0 auto;
-    width: 90vw;
+    width: 80vw;
     height: calc(((100vh - var(--header-height)) * 0.65) * 0.5);
 }
 
@@ -164,12 +180,13 @@ ul {
 /* Text box */
 .text-box-section {
     position: relative;
+    z-index: 1;
     height: calc((100vh - var(--header-height)) * 0.35);
 }
 
 #text-box {
     margin: auto;
-    width: 90vw;
+    width: 80vw;
     height: 90%;
     border: 3px double white;
     background-color: rgba(0, 0, 0, 70%);
@@ -184,7 +201,7 @@ ul {
 }
 
 #text-box > p {
-    width: 90%;
+    width: 85%;
     height: 80%;
 }
 
@@ -201,17 +218,15 @@ ul {
     position: fixed;
     z-index: 2;
     left: 0;
-    right: 0;
-    top: 15%;
-    margin: 5% 0;
-    height: 300px;
+    top: 0;
+    padding-top: 150px;
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     gap: 3%;
-    align-items: center;
     animation-name: cards;
     animation-duration: 2s;
-    animation-iteration-count: 1;
 }
 
 .card {
@@ -219,7 +234,7 @@ ul {
     width: 210px;
     height: 300px;
     background-color: white;
-    border: 1px solid blue;
+    border: 1px solid white;
     border-radius: 10px;
 }
 
@@ -283,12 +298,12 @@ ul {
 
 @media screen and (max-width: 720px) {  
     .card {
-        width: 150px;
-        height: 210px;;
+        width: 160px;
+        height: 230px;
     }
 
     .choice-cards {
-        margin: 10% 0;
+        margin-top: 50px;
     }
 
     .reveal-cards {
@@ -298,8 +313,8 @@ ul {
 
 @media screen and (max-height: 700px) {
     .card {
-        width: 150px;
-        height: 210px;;
+        width: 160px;
+        height: 230px;
     }
 }
 
