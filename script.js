@@ -95,6 +95,7 @@ const nextText = (contents) => {
         return;
     }   
 }
+
 //first msg
 text.textContent = textContents[0].content;
 
@@ -133,3 +134,7 @@ window.addEventListener('keydown', (e) => {
 const aboutBtn = document.getElementById('aboutBtn');
 const restartBtn = document.getElementById('restartBtn');
 const langBtn = document.getElementById('langBtn');
+
+restartBtn.addEventListener('click', () => {
+    location.reload();
+})
