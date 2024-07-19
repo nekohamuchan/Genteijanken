@@ -14,18 +14,29 @@ window.onload = () => {
     startScreen.style.animationName = 'start';
     setTimeout(() => {
         startScreen.style.display = 'none';
-    }, 1800);
+    }, 1700);
 }
 
 //cards
-const cardChoices = document.getElementById('player-choice');
+const cardChoicesSection = document.getElementById('player-choices');
+const cardChoices = document.querySelectorAll('#player-choices > *');
 const showChoicesReg = /Choose your card./;
 
+let isCardsShowing = false;
 const darkenScreen = document.querySelector('.darken');
 const showChoices = () => {
-    cardChoices.classList.toggle('hidden');
+    cardChoicesSection.classList.toggle('hidden');
     darkenScreen.classList.toggle('hidden');
+    isCardsShowing = true;
 };
+
+let playerChoice = '';
+cardChoices.forEach(choice => {
+    choice.addEventListener('click', () => {
+        let playerChoice = choice.id;
+        console.log(playerChoice);
+    })
+})
 
 //text
 const textBox = document.getElementById('text-box');
@@ -36,7 +47,7 @@ let option;
 const textContents = [
     {
         id: 1,
-        content: "Welcome. Click to process."
+        content: "Welcome. Click or press enter to progress."
     },
     {
         id: 2,
@@ -67,11 +78,6 @@ const typeText = (msg) => {
         if (i === msg.length) {
             clearInterval(window.timeId1);
             textEnd.style.display = 'inline';
-
-            //show card choices after typing at the right text
-            if (showChoicesReg.test(text.textContent)) {
-                showChoices();
-            }
             return;
         }
         text.textContent += msg[i++];
@@ -89,28 +95,36 @@ const nextText = (contents) => {
         return;
     }   
 }
-
+//first msg
 text.textContent = textContents[0].content;
 
+const game = () => {
+    if (!isCardsShowing) {
+        if (text.textContent === textContents[textLine].content) {
+            nextText(textContents);
+        } else {
+            clearInterval(window.timeId1);
+            text.textContent = textContents[textLine].content;
+            textEnd.style.display = 'inline';
+            return;
+        };
+    } else {
+        return;
+    }
 
+    //show card choices
+    if (showChoicesReg.test(textContents[textLine].content)) {
+        showChoices();
+    }
+}
 
 //input function
-textBox.addEventListener('click', () => {
-    if (text.textContent === textContents[textLine].content) {
-        nextText(textContents);
-    } else {
-        clearInterval(window.timeId1);
-        text.textContent = textContents[textLine].content;
-        textEnd.style.display = 'inline';
-        return;
-    };
-
-});
+textBox.addEventListener('click', game);
 
 window.addEventListener('keydown', (e) => {
     switch (e.key) {
         case 'Enter':
-            
+            game();
             break;
     }
 })
@@ -119,96 +133,3 @@ window.addEventListener('keydown', (e) => {
 const aboutBtn = document.getElementById('aboutBtn');
 const restartBtn = document.getElementById('restartBtn');
 const langBtn = document.getElementById('langBtn');
-
-
-
-/*
-//main
-let computerScore = 0;
-let playerScore = 0;
-
-const getComputerChoice = () => {
-    const randomInt = Math.floor(Math.random() * 3);
-    let computerChoice = "";
-    
-    switch (randomInt) {
-        case 0:
-            computerChoice = "Rock";
-            break;
-        case 1:
-            computerChoice = "Paper";
-            break;
-        case 2:
-            computerChoice = "Scissors"
-            break;
-    }
-
-    return computerChoice;
-}
-
-const getPlayerChoice = () => {
-    //const playerChoice = prompt("Your choice?");
-    //return playerChoice;
-
-    //test code
-    const randomInt = Math.floor(Math.random() * 3);
-    let computerChoice = "";
-    
-    switch (randomInt) {
-        case 0:
-            computerChoice = "Rock";
-            break;
-        case 1:
-            computerChoice = "Paper";
-            break;
-        case 2:
-            computerChoice = "Scissors"
-            break;
-    }
-
-    return computerChoice;
-}
-
-const playRound = (playerSelect = getPlayerChoice().toLowerCase(),
- computerSelect = getComputerChoice().toLowerCase()) => {
-
-    console.log(playerSelect, computerSelect);
-    if ((playerSelect === "rock" && computerSelect === "scissors") || 
-    (playerSelect === "paper" && computerSelect === "rock") || 
-    (playerSelect === "scissors" && computerSelect === "paper")) {
-        playerScore++;
-        return `You win!`;
-    } else if ((playerSelect === "rock" && computerSelect === "paper") || 
-    (playerSelect === "paper" && computerSelect === "scissors") || 
-    (playerSelect === "scissors" && computerSelect === "rock")) {
-        computerScore++;
-        return `You lose!`;
-    } else {
-        return `It's a tie!`;
-    }
-
-}
-
-const playGame = () => {
-    
-    for (let i = 0; i < 5; i++) {
-        console.log(playRound());
-    }
-    
-    if (playerScore > computerScore) {
-        return `Congratulations! You are the winner! 
-        Your score: ${playerScore}
-        Computer's score: ${computerScore}`;
-    } else if (playerScore < computerScore) {
-        return `You lose! Better luck next time! 
-        Your score: ${playerScore}
-        Computer's score: ${computerScore}`;
-    } else {
-        return `It's a tie! Better luck next time! 
-        Your score: ${playerScore}
-        Computer's score: ${computerScore}`;
-    }
-}
-
-console.log(playGame());
-*/
