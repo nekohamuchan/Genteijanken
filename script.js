@@ -32,11 +32,22 @@ const showChoices = () => {
 
 let playerChoice = '';
 cardChoices.forEach(choice => {
+    //player choose card
     choice.addEventListener('click', () => {
-        let playerChoice = choice.id;
-        console.log(playerChoice);
+        playerChoice = choice.id;
+        cardChoicesSection.classList.toggle('hidden');
+        darkenScreen.classList.toggle('hidden');
+        isCardsShowing = false;
+        nextText(textContents);
     })
-})
+});
+
+const revealChoices = document.getElementById('reveal-cards');
+const revealChoicesReg = /Open!/;
+const showReveal = () => {
+    revealChoices.classList.toggle('hidden');
+    isCardsShowing = true;
+};
 
 //text
 const textBox = document.getElementById('text-box');
@@ -69,6 +80,14 @@ const textContents = [
         id: 6,
         content: "Choose your card."
     },
+    {
+        id: 7,
+        content: "Set."
+    },
+    {
+        id: 8,
+        content: "Open!"
+    },
 ];
 
 let isAllType = true;
@@ -87,6 +106,7 @@ const typeText = (msg) => {
     }, 30, msg);
 }
 
+//textLine + 1 = textContents id
 let textLine = 0;
 const nextText = (contents) => {
     if (textLine === contents.length - 1) {
@@ -120,6 +140,12 @@ const game = () => {
     //show card choices
     if (showChoicesReg.test(textContents[textLine].content)) {
         showChoices();
+        return;
+    }
+
+    if (revealChoicesReg.test(textContents[textLine].content)) {
+        showReveal();
+        return;
     }
 }
 
