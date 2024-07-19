@@ -8,8 +8,6 @@ window.addEventListener('resize', () => {
     root.style.setProperty('--header-height', headerH + 'px');
 })
 
-//header button
-
 //text
 const textBox = document.getElementById('text-box');
 const text = document.getElementById('text');
@@ -87,6 +85,10 @@ window.addEventListener('keydown', (e) => {
     }
 })
 
+//header button
+const aboutBtn = document.getElementById('aboutBtn');
+const restartBtn = document.getElementById('restartBtn');
+const langBtn = document.getElementById('langBtn');
 
 
 

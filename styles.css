@@ -130,6 +130,10 @@ ul {
     cursor: pointer;
 }
 
+.link:active {
+    transform: scale(1.05);
+}
+
 /* Life section */
 .life-container {
     position: relative;
