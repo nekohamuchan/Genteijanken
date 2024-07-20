@@ -10,6 +10,7 @@ window.addEventListener('resize', () => {
 
 //audios
 const bgm = new Audio('./sounds/Espoir.mp3');
+let isBgmPlaying = false;
 bgm.volume = 0.2;
 bgm.loop = true;
 const txtSFX = new Audio('./sounds/text-scroll-1.mp3');
@@ -18,14 +19,13 @@ txtSFX.loop = true;
 //after page onload
 const startScreen = document.querySelector('.start');
 window.onload = () => {
+    //start screen
     startScreen.style.animationName = 'start';
     setTimeout(() => {
         startScreen.style.display = 'none';
     }, 1700);
 
-    bgm.play();
-}
-
+};
 
 //cards
 const cardChoicesSection = document.getElementById('player-choices');
@@ -204,6 +204,11 @@ const nextText = (contents) => {
 text.textContent = textContents[0].content;
 
 const game = () => {
+    if (textLine === 0) {
+        bgm.play();
+        isBgmPlaying = true;
+    };
+
     if (!isCardsShowing) {
         if (text.textContent === textContents[textLine].content && isAllType) {
             nextText(textContents);
@@ -259,7 +264,6 @@ const restartBtn = document.getElementById('restartBtn');
 const langBtn = document.getElementById('langBtn');
 const bgmBtn = document.getElementById('bgmBtn');
 const bgmIcon = document.getElementById('bgmIcon');
-let isBgmPlaying = true;
 
 restartBtn.addEventListener('click', () => {
     location.reload();
