@@ -72,8 +72,12 @@ const getKaijiChoice = () => {
 };
 
 const applyCardChoices = () => {
-    kaijiCard.classList.add(getKaijiChoice());
-    playerCard.classList.add(playerChoice);
+    kaijiCard.className = 'card';
+    playerCard.className = 'card';
+    setTimeout(() => {
+        kaijiCard.classList.add(getKaijiChoice());
+        playerCard.classList.add(playerChoice);
+    }, 1190);
     return;
 };
 
@@ -261,7 +265,6 @@ window.addEventListener('keydown', (e) => {
             getKaijiChoice();
             break;
         case ' ':
-            console.log('test', document.querySelector('html').getAttribute('lang'));
             
             break;
     }

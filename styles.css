@@ -43,10 +43,6 @@
     50% {bottom: 0;}
 }
 
-html {
-    font-feature-settings: 'locl' 0;
-}
-
 ::selection {
     background: red;
   }
@@ -232,8 +228,12 @@ ul {
 }
 
 #text-box > p {
-    width: 85%;
+    padding: 0 20px;
+    width: 90%;
     height: 80%;
+    overflow: scroll;
+    scrollbar-color: red transparent;
+    scrollbar-width: thin;
 }
 
 .sparkle {
@@ -300,7 +300,7 @@ ul {
     z-index: 2;
     left: 0;
     right: 0;
-    top: 10%;
+    top: 9%;
     margin-top: 70px;
     height: 300px;
     display: flex;
@@ -349,3 +349,6 @@ ul {
 }
 
 
+.red {
+    background-color: red;
+}
