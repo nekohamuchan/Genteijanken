@@ -16,8 +16,19 @@ const bgm = new Audio('./sounds/Espoir.mp3');
 let isBgmPlaying = false;
 bgm.volume = 0.2;
 bgm.loop = true;
+
 const txtSFX = new Audio('./sounds/text-scroll-1.mp3');
 txtSFX.loop = true;
+
+const playAudio = audio => {
+    audio.play();
+    isBgmPlaying = true;
+};
+const stopAudio = audio => {
+    audio.pause();
+    audio.currentTime = 0;
+    isBgmPlaying = false;
+}
 
 //after page onload
 const startScreen = document.querySelector('.start');
@@ -188,13 +199,12 @@ const typeText = (msg) => {
     textEnd.style.display = 'none';
     isAllTyped = false;
     let i = 0;
-    txtSFX.play();
+    playAudio(txtSFX);
     window.txtTyping = setInterval(msg => {
         if (i === msg.length) {
             clearInterval(window.txtTyping);
             textEnd.style.display = 'inline';
-            txtSFX.pause();
-            txtSFX.currentTime = 0;
+            stopAudio(txtSFX);
             isAllTyped = true;
             return;
         };
@@ -220,8 +230,8 @@ text.textContent = textContents[0].content;
 const game = () => {
     //play bgm
     if (textLine === 0) {
-        bgm.play();
-        isBgmPlaying = true;
+        playAudio(bgm);
+        
     };
 
     //play txt
@@ -233,8 +243,7 @@ const game = () => {
             text.textContent = textContents[textLine].content;
             textEnd.style.display = 'inline';
             isAllTyped = true;
-            txtSFX.pause();
-            txtSFX.currentTime = 0;
+            stopAudio(txtSFX);
             return;
         };
     } else {
@@ -265,7 +274,7 @@ window.addEventListener('keydown', (e) => {
     switch (e.key) {
         case 'Enter':
             game();
-            getKaijiChoice();
+            
             break;
         case ' ':
             
@@ -298,7 +307,7 @@ langBtn.addEventListener('click', () => {
         typeSpeed = 60;
         textContents = txtJap;
         typeText(textContents[textLine].content);
-        textEnd.style.marginLeft = '0';
+        textEnd.style.marginLeft = '-10px';
 
     } else if (langBtn.textContent === 'English') {
         //change to Jap
@@ -319,17 +328,14 @@ langBtn.addEventListener('click', () => {
 
 bgmBtn.addEventListener('click', () => {
     if (isBgmPlaying) {
-        bgm.pause();
-        bgm.currentTime = 0;
+        stopAudio(bgm);
         bgmIcon.classList.remove('fa-volume-high');
         bgmIcon.classList.add('fa-volume-xmark');
-        isBgmPlaying = false;
 
     } else {
-        bgm.play();
+        playAudio(bgm);
         bgmIcon.classList.remove('fa-volume-xmark');
         bgmIcon.classList.add('fa-volume-high');
-        isBgmPlaying = true;
 
     }
 })
