@@ -12,8 +12,8 @@ window.addEventListener('resize', () => {
 })
 
 //audios
+let isAudioOpen = true;
 const bgm = new Audio('./sounds/Espoir.mp3');
-let isBgmPlaying = false;
 bgm.volume = 0.2;
 bgm.loop = true;
 
@@ -21,14 +21,18 @@ const txtSFX = new Audio('./sounds/text-scroll-1.mp3');
 txtSFX.loop = true;
 
 const playAudio = audio => {
+    if (!isAudioOpen) {
+        return;
+    };
     audio.play();
-    isBgmPlaying = true;
 };
 const stopAudio = audio => {
+    if (!isAudioOpen) {
+        return;
+    }
     audio.pause();
     audio.currentTime = 0;
-    isBgmPlaying = false;
-}
+};
 
 //after page onload
 const startScreen = document.querySelector('.start');
@@ -230,8 +234,7 @@ text.textContent = textContents[0].content;
 const game = () => {
     //play bgm
     if (textLine === 0) {
-        playAudio(bgm);
-        
+        playAudio(bgm);      
     };
 
     //play txt
@@ -319,7 +322,7 @@ langBtn.addEventListener('click', () => {
         typeSpeed = 30;
         textContents = txtEng;
         typeText(textContents[textLine].content);
-        textEnd.style.marginLeft = '5xp';
+        textEnd.style.marginLeft = '5px';
     }
 
     //prevent font size change el height
@@ -327,15 +330,26 @@ langBtn.addEventListener('click', () => {
 });
 
 bgmBtn.addEventListener('click', () => {
-    if (isBgmPlaying) {
-        stopAudio(bgm);
+    if (isAudioOpen) {
         bgmIcon.classList.remove('fa-volume-high');
         bgmIcon.classList.add('fa-volume-xmark');
+        
+        stopAudio(bgm);
+        stopAudio(txtSFX);
+        isAudioOpen = false; //put last to prevent stopAudio return
 
     } else {
-        playAudio(bgm);
         bgmIcon.classList.remove('fa-volume-xmark');
         bgmIcon.classList.add('fa-volume-high');
+        isAudioOpen = true;
 
+        //replay audio
+        if (textLine !== 0) {
+            playAudio(bgm);
+        };
+
+        if (!isAllTyped) {
+            playAudio(txtSFX);
+        };
     }
 })
