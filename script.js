@@ -2,10 +2,13 @@
 let headerH = document.querySelector('header').offsetHeight;
 const root = document.documentElement;
 root.style.setProperty('--header-height', headerH + 'px');
-
-window.addEventListener('resize', () => {
+const resizeElHeight = () => {
     headerH = document.querySelector('header').offsetHeight;
     root.style.setProperty('--header-height', headerH + 'px');
+};
+
+window.addEventListener('resize', () => {
+    resizeElHeight();
 })
 
 //audios
@@ -111,7 +114,7 @@ const txtEng = [
     },
     {
         id: 3,
-        content: "There are 4 cards of each type, which are consumed every time a card is played. The right-bottom stars is your lives. Game over if you lose all of your stars."
+        content: "There are 4 cards of each type, which are consumed every time a card is played. The right-bottom stars is your lives. Game over if you lose all of your stars or cards."
     },
     {
         id: 4,
@@ -149,7 +152,7 @@ const txtJap = [
     },
     {
         id: 3,
-        content: "各カードは4枚ずつあり、カードを使用するたびに消費されます。右下の星がライフです。星を全て失うとゲームオーバーです。"
+        content: "各カードは4枚ずつあり、カードを使用するたびに消費されます。右下の星がライフです。星やカードを全て失うとゲームオーバーです。"
     },
     {
         id: 4,
@@ -295,6 +298,7 @@ langBtn.addEventListener('click', () => {
         typeSpeed = 60;
         textContents = txtJap;
         typeText(textContents[textLine].content);
+        textEnd.style.marginLeft = '0';
 
     } else if (langBtn.textContent === 'English') {
         //change to Jap
@@ -306,7 +310,11 @@ langBtn.addEventListener('click', () => {
         typeSpeed = 30;
         textContents = txtEng;
         typeText(textContents[textLine].content);
+        textEnd.style.marginLeft = '5xp';
     }
+
+    //prevent font size change el height
+    resizeElHeight();
 });
 
 bgmBtn.addEventListener('click', () => {

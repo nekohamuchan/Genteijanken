@@ -231,7 +231,8 @@ ul {
     padding: 0 20px;
     width: 90%;
     height: 80%;
-    overflow: scroll;
+    display: block;
+    overflow-y: scroll;
     scrollbar-color: red transparent;
     scrollbar-width: thin;
 }
@@ -346,9 +347,4 @@ ul {
         width: 160px;
         height: 230px;
     }
-}
-
-
-.red {
-    background-color: red;
 }
