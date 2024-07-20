@@ -54,8 +54,8 @@ cardChoices.forEach(choice => {
 const kaijiCard = document.getElementById('kaiji-card');
 const playerCard = document.getElementById('player-card');
 
-let kaijiChoice = '';
 const getKaijiChoice = () => {
+    let kaijiChoice = '';
     let i = Math.floor(Math.random() * 3);
     switch (i) {
         case 0:
@@ -68,8 +68,14 @@ const getKaijiChoice = () => {
             kaijiChoice = 'scissors';
             break;
     }
-    return;
+    return kaijiChoice;
 };// work here
+
+const applyCardChoices = () => {
+    kaijiCard.classList.add(getKaijiChoice());
+    playerCard.classList.add(playerChoice);
+    return;
+};
 
 let isRevealShowing = false;
 const revealChoices = document.getElementById('reveal-cards');
@@ -92,7 +98,7 @@ const textEnd = document.querySelector('.sparkle');
 const txtEng = [
     {
         id: 1,
-        content: "Welcome. Click or press enter to progress."
+        content: "Welcome. Click or press enter to continue."
     },
     {
         id: 2,
@@ -100,7 +106,7 @@ const txtEng = [
     },
     {
         id: 3,
-        content: "The right-bottom stars is your lives. Game over if you lose all of your stars."
+        content: "There are 4 cards of each type, which are consumed every time a card is played. The right-bottom stars is your lives. Game over if you lose all of your stars."
     },
     {
         id: 4,
@@ -130,7 +136,7 @@ const txtEng = [
 const txtJap = [
     {
         id: 1,
-        content: "ようこそ。 クリックするか、Enterを押して先に進みます。"
+        content: "ようこそ。クリックするか、Enterを押して続行してください。"
     },
     {
         id: 2,
@@ -138,7 +144,7 @@ const txtJap = [
     },
     {
         id: 3,
-        content: "右下の星はあなたの命です。星を全て失うとゲームオーバーです。"
+        content: "各カードは4枚ずつあり、カードを使用するたびに消費されます。右下の星がライフです。星を全て失うとゲームオーバーです。"
     },
     {
         id: 4,
@@ -204,11 +210,13 @@ const nextText = (contents) => {
 text.textContent = textContents[0].content;
 
 const game = () => {
+    //play bgm
     if (textLine === 0) {
         bgm.play();
         isBgmPlaying = true;
     };
 
+    //play txt
     if (!isCardsShowing) {
         if (text.textContent === textContents[textLine].content && isAllType) {
             nextText(textContents);
