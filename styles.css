@@ -310,6 +310,7 @@ ul {
 }
 
 #kaiji-card {
+    transform: rotate(180deg);
     position: relative;
     animation-name: reveal, down;
     animation-duration: 2s;

@@ -69,7 +69,7 @@ const getKaijiChoice = () => {
             break;
     }
     return kaijiChoice;
-};// work here
+};
 
 const applyCardChoices = () => {
     kaijiCard.classList.add(getKaijiChoice());
@@ -80,6 +80,7 @@ const applyCardChoices = () => {
 let isRevealShowing = false;
 const revealChoices = document.getElementById('reveal-cards');
 const showReveal = () => {
+    applyCardChoices();
     revealChoices.classList.toggle('hidden');
     textBox.style.pointerEvents = "none";
     isCardsShowing = true;
@@ -174,11 +175,11 @@ const txtJap = [
 
 let textContents = txtEng;
 
-let isAllType = true;
+let isAllTyped = true;
 let typeSpeed = 30;
 const typeText = (msg) => {
     textEnd.style.display = 'none';
-    isAllType = false;
+    isAllTyped = false;
     let i = 0;
     txtSFX.play();
     window.txtTyping = setInterval(msg => {
@@ -187,7 +188,7 @@ const typeText = (msg) => {
             textEnd.style.display = 'inline';
             txtSFX.pause();
             txtSFX.currentTime = 0;
-            isAllType = true;
+            isAllTyped = true;
             return;
         };
         text.textContent += msg[i++];
@@ -218,13 +219,13 @@ const game = () => {
 
     //play txt
     if (!isCardsShowing) {
-        if (text.textContent === textContents[textLine].content && isAllType) {
+        if (text.textContent === textContents[textLine].content && isAllTyped) {
             nextText(textContents);
         } else {
             clearInterval(window.txtTyping);
             text.textContent = textContents[textLine].content;
             textEnd.style.display = 'inline';
-            isAllType = true;
+            isAllTyped = true;
             txtSFX.pause();
             txtSFX.currentTime = 0;
             return;
