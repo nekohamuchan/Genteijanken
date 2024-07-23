@@ -45,6 +45,16 @@ window.onload = () => {
 
 };
 
+//lives
+const kaijiStar = document.getElementById('kaiji-lp');
+const playerStar = document.getElementById('player-lp');
+let kaijiLive = 3;
+let playerLive = 3;
+
+const removeStar = () => {
+
+};
+
 //cards
 const cardChoicesSection = document.getElementById('player-choices');
 const cardChoices = document.querySelectorAll('#player-choices > *');
@@ -155,7 +165,7 @@ const cardResult = () => {
     (playerChoice === 'scissors' && kaijiChoice === 'paper')) {
         typeText(textContents[10].content);
         return;
-    }
+    };
 };
 
 //text
@@ -207,6 +217,10 @@ const txtEng = [
     {
         id: 10,
         content: `You win!`
+    },
+    {
+        id: 11,
+        content: "Current status. Prepare for next round."
     }
 ];
 const txtJap = [
@@ -253,6 +267,10 @@ const txtJap = [
     {
         id: 10,
         content: `You win!`
+    },
+    {
+        id: 11,
+        content: "Current status. Prepare for next round."
     }
 ];
 
@@ -282,7 +300,7 @@ const typeText = (msg) => {
 //textLine = textContents id
 let textLine = 1;
 const nextText = (contents) => {
-    if (textLine === contents.length - 1) {
+    if (textLine === contents.length) {
         return;
     } else {
         typeText(contents[textLine].content);
@@ -292,6 +310,16 @@ const nextText = (contents) => {
 
 //first msg
 text.textContent = textContents[0].content;
+
+const gameOver = () => {
+    if (textLine < 8) {
+        return;
+    };
+
+    if (rockNum === 0 && paperNum === 0 && scissorsNum === 0) {
+        text.textContent = 'Game over. You lose all of your cards.'
+    };
+};
 
 const game = () => {
     //play bgm
@@ -307,9 +335,13 @@ const game = () => {
     //card result
     if (textLine === 8) {
         cardResult();
-        textLine = 4;
+        textLine = 10;
         return;
-    }
+    };
+    //replay round
+    if (textLine === 12) {
+        textLine = 5;
+    };
 
     //play txt
     if (!isCardsShowing) {
