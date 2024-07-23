@@ -45,16 +45,6 @@ window.onload = () => {
 
 };
 
-//lives
-const kaijiStar = document.getElementById('kaiji-lp');
-const playerStar = document.getElementById('player-lp');
-let kaijiLive = 3;
-let playerLive = 3;
-
-const removeStar = () => {
-
-};
-
 //cards
 const cardChoicesSection = document.getElementById('player-choices');
 const cardChoices = document.querySelectorAll('#player-choices > *');
@@ -166,6 +156,22 @@ const cardResult = () => {
         typeText(textContents[10].content);
         return;
     };
+};
+
+//lives
+const kaijiStar = document.getElementById('kaiji-lp');
+const playerStar = document.getElementById('player-lp');
+let kaijiLive = 3;
+let playerLive = 3;
+
+const removeStar = (who) => {
+    who.removeChild(who.lastElementChild);
+};
+
+const addStar = (who) => {
+    const liveP = document.createElement('div');
+    liveP.classList.add('life-point');
+    who.append(liveP);
 };
 
 //text
