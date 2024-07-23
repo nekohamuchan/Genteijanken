@@ -21,13 +21,13 @@ const txtSFX = new Audio('./sounds/text-scroll-1.mp3');
 txtSFX.loop = true;
 
 const playAudio = audio => {
-    if (!isAudioOpen) {
+    if (isAudioOpen === false) {
         return;
     };
     audio.play();
 };
 const stopAudio = audio => {
-    if (!isAudioOpen) {
+    if (isAudioOpen === false) {
         return;
     }
     audio.pause();
@@ -48,6 +48,12 @@ window.onload = () => {
 //cards
 const cardChoicesSection = document.getElementById('player-choices');
 const cardChoices = document.querySelectorAll('#player-choices > *');
+const rockNumTxt = document.getElementById('rockNum');
+const paperNumTxt = document.getElementById('paperNum');
+const scissorsNumTxt = document.getElementById('scissorsNum');
+let rockNum = 4;
+let paperNum = 4;
+let scissorsNum = 4;
 
 let isCardsShowing = false;
 const darkenScreen = document.querySelector('.darken');
@@ -61,6 +67,18 @@ let playerChoice = '';
 cardChoices.forEach(choice => {
     //player choose card
     choice.addEventListener('click', () => {
+        switch (choice.id) {
+            case 'rock':
+                rockNumTxt.textContent = --rockNum;
+                break;
+            case 'paper':
+                paperNumTxt.textContent = --paperNum;
+                break;
+            case 'scissors':
+                scissorsNumTxt.textContent = --scissorsNum;
+                break;
+        };
+
         playerChoice = choice.id;
         cardChoicesSection.classList.toggle('hidden');
         darkenScreen.classList.toggle('hidden');
@@ -238,7 +256,7 @@ const game = () => {
     };
 
     //play txt
-    if (!isCardsShowing) {
+    if (isCardsShowing === false) {
         if (text.textContent === textContents[textLine].content && isAllTyped) {
             nextText(textContents);
         } else {
