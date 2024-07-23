@@ -21,13 +21,13 @@ const txtSFX = new Audio('./sounds/text-scroll-1.mp3');
 txtSFX.loop = true;
 
 const playAudio = audio => {
-    if (isAudioOpen === false) {
+    if (!isAudioOpen) {
         return;
     };
     audio.play();
 };
 const stopAudio = audio => {
-    if (isAudioOpen === false) {
+    if (!isAudioOpen) {
         return;
     }
     audio.pause();
@@ -99,8 +99,8 @@ cardChoices.forEach(choice => {
 const kaijiCard = document.getElementById('kaiji-card');
 const playerCard = document.getElementById('player-card');
 
+let kaijiChoice = '';
 const getKaijiChoice = () => {
-    let kaijiChoice = '';
     let i = Math.floor(Math.random() * 3);
     switch (i) {
         case 0:
@@ -113,14 +113,14 @@ const getKaijiChoice = () => {
             kaijiChoice = 'scissors';
             break;
     }
-    return kaijiChoice;
 };
 
 const applyCardChoices = () => {
     kaijiCard.className = 'card';
     playerCard.className = 'card';
+    getKaijiChoice();
     setTimeout(() => {
-        kaijiCard.classList.add(getKaijiChoice());
+        kaijiCard.classList.add(kaijiChoice);
         playerCard.classList.add(playerChoice);
     }, 1190);
     return;
@@ -137,7 +137,25 @@ const showReveal = () => {
     setTimeout(() => {
         textBox.style.pointerEvents = "auto";
         isCardsShowing = false;
-    }, 2300)
+    }, 2000)
+};
+
+const cardResult = () => {
+    console.log(kaijiChoice, playerChoice);
+    if (kaijiChoice === playerChoice) {
+        typeText(textContents[8].content);
+        return;
+    } else if ((kaijiChoice === 'rock' && playerChoice === 'scissors') || 
+    (kaijiChoice === 'paper' && playerChoice === 'rock') || 
+    (kaijiChoice === 'scissors' && playerChoice === 'paper')) {
+        typeText(textContents[9].content);
+        return;   
+    } else if ((playerChoice === 'rock' && kaijiChoice === 'scissors') || 
+    (playerChoice === 'paper' && kaijiChoice === 'rock') || 
+    (playerChoice === 'scissors' && kaijiChoice === 'paper')) {
+        typeText(textContents[10].content);
+        return;
+    }
 };
 
 //text
@@ -147,79 +165,95 @@ const textEnd = document.querySelector('.sparkle');
 
 const txtEng = [
     {
-        id: 1,
+        id: 0,
         content: "Welcome. Click or press enter to continue."
     },
     {
-        id: 2,
+        id: 1,
         content: "This is Genteijanken. It's basically rock, paper, scissors but with lives and limit cards."
     },
     {
-        id: 3,
+        id: 2,
         content: "There are 4 cards of each type, which are consumed every time a card is played. The right-bottom stars is your lives. Game over if you lose all of your stars or cards."
     },
     {
-        id: 4,
+        id: 3,
         content: "Try to compete Kaiji and win the game!"
     },
     {
-        id: 5,
+        id: 4,
         content: "Game start!"
     },
     {
-        id: 6,
+        id: 5,
         content: "Choose your card."
     },
     {
-        id: 7,
+        id: 6,
         content: "Set."
     },
     {
-        id: 8,
+        id: 7,
         content: "Open!"
     },
     {
-        id: 9,
-        content: "Cards should dissapear"
+        id: 8,
+        content: `It's fair!`
     },
+    {
+        id: 9,
+        content: `You lose!`
+    },
+    {
+        id: 10,
+        content: `You win!`
+    }
 ];
 const txtJap = [
     {
-        id: 1,
+        id: 0,
         content: "ようこそ。クリックするか、Enterを押して続行してください。"
     },
     {
-        id: 2,
+        id: 1,
         content: "これは限定じゃんけんです。基本的にはじゃんけんですが、ライフと制限カードがあります。"
     },
     {
-        id: 3,
+        id: 2,
         content: "各カードは4枚ずつあり、カードを使用するたびに消費されます。右下の星がライフです。星やカードを全て失うとゲームオーバーです。"
     },
     {
-        id: 4,
+        id: 3,
         content: "カイジと競争してゲームに勝利しよう！"
     },
     {
-        id: 5,
+        id: 4,
         content: "ゲーム開始！"
     },
     {
-        id: 6,
+        id: 5,
         content: "カードを選択してください。"
     },
     {
-        id: 7,
+        id: 6,
         content: "セット"
     },
     {
-        id: 8,
+        id: 7,
         content: "オープン!"
     },
     {
-        id: 9,
-        content: "カードは消えるはずだ"
+        id: 8,
+        content: `It's fair!`
     },
+    {
+        id: 9,
+        content: `You lose!`
+    },
+    {
+        id: 10,
+        content: `You win!`
+    }
 ];
 
 let textContents = txtEng;
@@ -227,6 +261,7 @@ let textContents = txtEng;
 let isAllTyped = true;
 let typeSpeed = 30;
 const typeText = (msg) => {
+    text.textContent = '';
     textEnd.style.display = 'none';
     isAllTyped = false;
     let i = 0;
@@ -237,20 +272,20 @@ const typeText = (msg) => {
             textEnd.style.display = 'inline';
             stopAudio(txtSFX);
             isAllTyped = true;
+            textLine++;
             return;
         };
         text.textContent += msg[i++];
     }, typeSpeed, msg);
 };
 
-//textLine + 1 = textContents id
-let textLine = 0;
+//textLine = textContents id
+let textLine = 1;
 const nextText = (contents) => {
     if (textLine === contents.length - 1) {
         return;
     } else {
-        text.textContent = '';
-        typeText(contents[++textLine].content);
+        typeText(contents[textLine].content);
         return;
     }; 
 };
@@ -260,41 +295,50 @@ text.textContent = textContents[0].content;
 
 const game = () => {
     //play bgm
-    if (textLine === 0) {
-        playAudio(bgm);      
+    if (textLine === 1) {
+        playAudio(bgm); 
     };
 
+    //close reveal
+    if (textLine !== 7 && isRevealShowing) {
+        revealChoices.classList.toggle('hidden');
+        isRevealShowing = false;
+    };
+    //card result
+    if (textLine === 8) {
+        cardResult();
+        textLine = 4;
+        return;
+    }
+
     //play txt
-    if (isCardsShowing === false) {
-        if (text.textContent === textContents[textLine].content && isAllTyped) {
+    if (!isCardsShowing) {
+        if (isAllTyped) {
             nextText(textContents);
+            
         } else {
             clearInterval(window.txtTyping);
             text.textContent = textContents[textLine].content;
             textEnd.style.display = 'inline';
             isAllTyped = true;
+            textLine++;
             stopAudio(txtSFX);
-            return;
+            
         };
     } else {
         return;
     };
 
-    //show card choices
-    if (textLine === 5) {
+     //show card choices
+     if (textLine === 5) {
         showChoices();
-        return;
     };
 
     if (textLine === 7) {
         showReveal();
-        return;
     };
 
-    if (isRevealShowing) {
-        revealChoices.classList.toggle('hidden');
-        isRevealShowing = false;
-    };
+    console.log(textLine)
 };
 
 //input function
