@@ -58,6 +58,15 @@ let scissorsNum = 4;
 let isCardsShowing = false;
 const darkenScreen = document.querySelector('.darken');
 const showChoices = () => {
+    if (rockNum === 0) {
+        cardChoices[0].style.display = 'none';
+    };
+    if (paperNum === 0) {
+        cardChoices[1].style.display = 'none';
+    };
+    if (scissorsNum === 0) {
+        cardChoices[2].style.display = 'none';
+    };
     cardChoicesSection.classList.toggle('hidden');
     darkenScreen.classList.toggle('hidden');
     isCardsShowing = true;
