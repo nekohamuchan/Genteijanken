@@ -50,6 +50,7 @@ window.onload = () => {
 
 };
 
+//text
 const txtEng = [
     {
         id: 0,
@@ -98,26 +99,32 @@ const txtEng = [
     {
         id: 11,
         content: "Current status. Prepare for next round."
+    },
+    {
+        id: 12,
+        content: "Congratulations! You win!"
     }
 ];
+let txtContents = txtEng;
 
 const textBox = document.getElementById('text-box');
 const text = document.getElementById('text');
 const txtEnd = document.querySelector('.sparkle');
-
 let isAllTyped = true;
+
 let txtSpeed = 30;
 const typeTxt = (msg) => {
     text.textContent = '';
     txtEnd.style.display = 'none';
     isAllTyped = false;
     let i = 0;
+    playAudio(txtSFX);
     window.txtTyping = setInterval(msg => {
         if (i === msg.length) {
-            cancelType();
             delayNext(500);
+            cancelType();
             return;
-        }
+        };
         text.textContent += msg[i++];
     }, txtSpeed, msg);
 };
@@ -125,6 +132,7 @@ const typeTxt = (msg) => {
 const cancelType = () => {
     txtEnd.style.display = 'inline-block';
     isAllTyped = true;
+    stopAudio(txtSFX);
     clearInterval(window.txtTyping);
 };
 
@@ -138,29 +146,195 @@ const delayNext = (time) => {
 
 let txtLine = 0;
 const nextTxt = (contents) => {
-    if (isAllTyped && !isDelay) {
+    if (isDelay) {
+        return;
+    };
+
+    if (isAllTyped) {
         if (isTxtOver) {
             return;
         };
-        typeTxt(contents[txtLine++].content);
+        typeTxt(contents[++txtLine].content);
     } else {
         cancelType();
         text.textContent = '';
-        text.textContent = contents[txtLine - 1].content;
-        delayNext(700);
+        text.textContent = contents[txtLine].content;
+        delayNext(500);
     };
+
     txtOver(contents);
 };
 
 let isTxtOver = false;
 const txtOver = (contents) => {
-    if (txtLine >= contents.length) {
+    if (txtLine >= contents.length - 1) {
         isTxtOver = true;
+    } else {
+        isTxtOver = false;
     };
 };
 
-textBox.addEventListener('click', () => {
-    nextTxt(txtEng);
+//card
+const cardChoicesSection = document.getElementById('player-choices');
+const cardChoices = document.querySelectorAll('#player-choices > *');
+const cardNum = document.querySelectorAll('.card-numbers > span');
+const revealChoices = document.getElementById('reveal-cards');
+const kaijiCard = document.getElementById('kaiji-card');
+const playerCard = document.getElementById('player-card');
+let rockNum = 4;
+let paperNum = 4;
+let scissorsNum = 4;
+let playerChoice = '';
+let kaijiChoice = '';
+
+let isCardShowing = false;
+const darkenScreen = document.querySelector('.darken');
+const showChoices = () => {
+    if (rockNum === 0) {
+        cardChoices[0].style.display = 'none';
+    };
+    if (paperNum === 0) {
+        cardChoices[1].style.display = 'none';
+    };
+    if (scissorsNum === 0) {
+        cardChoices[2].style.display = 'none';
+    };
+    cardChoicesSection.classList.toggle('hidden');
+    darkenScreen.classList.toggle('hidden');
+    isCardShowing = true;
+};
+
+cardChoices.forEach(choice => {
+    choice.addEventListener('click', () => {
+        playAudio(cardSFX1);
+        playerChoice = choice.id;
+        switch (choice.id) {
+            case 'rock':
+                cardNum[0].textContent = --rockNum;
+                break;
+            case 'paper':
+                cardNum[1].textContent = --paperNum;
+                break;
+            case 'scissors':
+                cardNum[2].textContent = --scissorsNum;
+                break;
+        };
+        nextTxt(txtContents);
+        isCardShowing = false;
+        cardChoicesSection.classList.toggle('hidden');
+        darkenScreen.classList.toggle('hidden');
+    });
 });
 
+const getKaijiChoice = () => {
+    let i = Math.floor(Math.random() * 3);
+    switch (i) {
+        case 0:
+            kaijiChoice = 'rock';
+            break;
+        case 1:
+            kaijiChoice = 'paper';
+            break;
+        case 2:
+            kaijiChoice = 'scissors';
+            break;
+    };
+};
+
+const applyCardChoices = () => {
+    kaijiCard.className = 'card';
+    playerCard.className = 'card';
+    getKaijiChoice();
+    setTimeout(() => {
+        playAudio(cardSFX2);
+        kaijiCard.classList.add(kaijiChoice);
+        playerCard.classList.add(playerChoice);
+    }, 1190);
+};
+
+let isReveal = false;
+const showReveal = () => {
+    applyCardChoices();
+    revealChoices.classList.toggle('hidden');
+    isReveal = true;
+    isCardShowing = true;
+    setTimeout(() => {
+        isCardShowing = false;
+    }, 2100);
+};
+
+const closeReveal = () => {
+    revealChoices.classList.toggle('hidden');
+};
+
+const roundResult = () => {
+    if (kaijiChoice === playerChoice) {
+        txtLine = 7;
+    } else if ((kaijiChoice === 'rock' && playerChoice === 'scissors') || 
+    (kaijiChoice === 'paper' && playerChoice === 'rock') || 
+    (kaijiChoice === 'scissors' && playerChoice === 'paper')) {
+        txtLine = 8; 
+    } else if ((playerChoice === 'rock' && kaijiChoice === 'scissors') || 
+    (playerChoice === 'paper' && kaijiChoice === 'rock') || 
+    (playerChoice === 'scissors' && kaijiChoice === 'paper')) {
+        txtLine = 9;
+    };
+    nextTxt(txtContents);
+};
+
+const replayRound = () => {
+    if (txtLine === 8 || txtLine === 9 || txtLine === 10) {
+        txtLine = 10;
+        
+    } else if (txtLine === 11) {
+        txtLine = 4; 
+    };
+};
+
+const game = () => {
+    if (isCardShowing || isDelay) {
+        return;
+    };
+
+    if (isReveal && txtLine === 7) {
+        closeReveal();
+        isReveal = false;
+    };
+
+    if (txtLine === 7) {
+        roundResult();
+        return;
+    };
+
+    if ((txtLine === 8 || txtLine === 9 || txtLine === 10) && isAllTyped) {
+        replayRound();
+    };
+    
+    nextTxt(txtContents);
+    console.log(txtLine);
+    
+    if (txtLine === 11 && isAllTyped) {
+        replayRound();
+    };
+    if (txtLine === 5) {
+        showChoices();
+    };
+    if (txtLine === 7) {
+        showReveal();
+    };
+    
+};
+
+text.textContent = txtContents[0].content
+textBox.addEventListener('click', () => {
+    game();
+});
+
+window.addEventListener('keydown', (e) => {
+    switch (e.key) {
+        case 'Enter':
+            game();
+            break;
+    };
+});
 
