@@ -20,6 +20,9 @@ bgm.loop = true;
 const txtSFX = new Audio('./sounds/text-scroll-1.mp3');
 txtSFX.loop = true;
 
+const cardSFX1 = new Audio('./sounds/card-choose.mp3');
+const cardSFX2 = new Audio('./sounds/card-open.mp3');
+
 const playAudio = audio => {
     if (!isAudioOpen) {
         return;
@@ -87,7 +90,7 @@ cardChoices.forEach(choice => {
                 scissorsNumTxt.textContent = --scissorsNum;
                 break;
         };
-
+        playAudio(cardSFX1);
         playerChoice = choice.id;
         cardChoicesSection.classList.toggle('hidden');
         darkenScreen.classList.toggle('hidden');
@@ -120,6 +123,7 @@ const applyCardChoices = () => {
     playerCard.className = 'card';
     getKaijiChoice();
     setTimeout(() => {
+        playAudio(cardSFX2);
         kaijiCard.classList.add(kaijiChoice);
         playerCard.classList.add(playerChoice);
     }, 1190);
@@ -164,14 +168,19 @@ const playerStar = document.getElementById('player-lp');
 let kaijiLive = 3;
 let playerLive = 3;
 
-const removeStar = (who) => {
-    who.removeChild(who.lastElementChild);
+const removeStar = (who, live) => {
+    who.lastElementChild.classList.add('remove-star');
+    setTimeout(() => {
+        who.removeChild(who.lastElementChild);
+    }, 1000);
+    live--;
 };
 
-const addStar = (who) => {
+const addStar = (who, live) => {
     const liveP = document.createElement('div');
     liveP.classList.add('life-point');
     who.append(liveP);
+    live++;
 };
 
 //text
