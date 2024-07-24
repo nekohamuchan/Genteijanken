@@ -22,6 +22,8 @@ txtSFX.loop = true;
 
 const cardSFX1 = new Audio('./sounds/card-choose.mp3');
 const cardSFX2 = new Audio('./sounds/card-open.mp3');
+cardSFX1.volume = 0.7;
+cardSFX2.volume = 0.7;
 
 const playAudio = audio => {
     if (!isAudioOpen) {
@@ -47,146 +49,6 @@ window.onload = () => {
     }, 1700);
 
 };
-
-//cards
-const cardChoicesSection = document.getElementById('player-choices');
-const cardChoices = document.querySelectorAll('#player-choices > *');
-const rockNumTxt = document.getElementById('rockNum');
-const paperNumTxt = document.getElementById('paperNum');
-const scissorsNumTxt = document.getElementById('scissorsNum');
-let rockNum = 4;
-let paperNum = 4;
-let scissorsNum = 4;
-
-let isCardsShowing = false;
-const darkenScreen = document.querySelector('.darken');
-const showChoices = () => {
-    if (rockNum === 0) {
-        cardChoices[0].style.display = 'none';
-    };
-    if (paperNum === 0) {
-        cardChoices[1].style.display = 'none';
-    };
-    if (scissorsNum === 0) {
-        cardChoices[2].style.display = 'none';
-    };
-    cardChoicesSection.classList.toggle('hidden');
-    darkenScreen.classList.toggle('hidden');
-    isCardsShowing = true;
-};
-
-let playerChoice = '';
-cardChoices.forEach(choice => {
-    //player choose card
-    choice.addEventListener('click', () => {
-        switch (choice.id) {
-            case 'rock':
-                rockNumTxt.textContent = --rockNum;
-                break;
-            case 'paper':
-                paperNumTxt.textContent = --paperNum;
-                break;
-            case 'scissors':
-                scissorsNumTxt.textContent = --scissorsNum;
-                break;
-        };
-        playAudio(cardSFX1);
-        playerChoice = choice.id;
-        cardChoicesSection.classList.toggle('hidden');
-        darkenScreen.classList.toggle('hidden');
-        isCardsShowing = false;
-        nextText(textContents);
-    })
-});
-
-const kaijiCard = document.getElementById('kaiji-card');
-const playerCard = document.getElementById('player-card');
-
-let kaijiChoice = '';
-const getKaijiChoice = () => {
-    let i = Math.floor(Math.random() * 3);
-    switch (i) {
-        case 0:
-            kaijiChoice = 'rock';
-            break;
-        case 1:
-            kaijiChoice = 'paper';
-            break;
-        case 2:
-            kaijiChoice = 'scissors';
-            break;
-    }
-};
-
-const applyCardChoices = () => {
-    kaijiCard.className = 'card';
-    playerCard.className = 'card';
-    getKaijiChoice();
-    setTimeout(() => {
-        playAudio(cardSFX2);
-        kaijiCard.classList.add(kaijiChoice);
-        playerCard.classList.add(playerChoice);
-    }, 1190);
-    return;
-};
-
-let isRevealShowing = false;
-const revealChoices = document.getElementById('reveal-cards');
-const showReveal = () => {
-    applyCardChoices();
-    revealChoices.classList.toggle('hidden');
-    textBox.style.pointerEvents = "none";
-    isCardsShowing = true;
-    isRevealShowing = true;
-    setTimeout(() => {
-        textBox.style.pointerEvents = "auto";
-        isCardsShowing = false;
-    }, 2000)
-};
-
-const cardResult = () => {
-    console.log(kaijiChoice, playerChoice);
-    if (kaijiChoice === playerChoice) {
-        typeText(textContents[8].content);
-        return;
-    } else if ((kaijiChoice === 'rock' && playerChoice === 'scissors') || 
-    (kaijiChoice === 'paper' && playerChoice === 'rock') || 
-    (kaijiChoice === 'scissors' && playerChoice === 'paper')) {
-        typeText(textContents[9].content);
-        return;   
-    } else if ((playerChoice === 'rock' && kaijiChoice === 'scissors') || 
-    (playerChoice === 'paper' && kaijiChoice === 'rock') || 
-    (playerChoice === 'scissors' && kaijiChoice === 'paper')) {
-        typeText(textContents[10].content);
-        return;
-    };
-};
-
-//lives
-const kaijiStar = document.getElementById('kaiji-lp');
-const playerStar = document.getElementById('player-lp');
-let kaijiLive = 3;
-let playerLive = 3;
-
-const removeStar = (who, live) => {
-    who.lastElementChild.classList.add('remove-star');
-    setTimeout(() => {
-        who.removeChild(who.lastElementChild);
-    }, 1000);
-    live--;
-};
-
-const addStar = (who, live) => {
-    const liveP = document.createElement('div');
-    liveP.classList.add('life-point');
-    who.append(liveP);
-    live++;
-};
-
-//text
-const textBox = document.getElementById('text-box');
-const text = document.getElementById('text');
-const textEnd = document.querySelector('.sparkle');
 
 const txtEng = [
     {
@@ -238,236 +100,67 @@ const txtEng = [
         content: "Current status. Prepare for next round."
     }
 ];
-const txtJap = [
-    {
-        id: 0,
-        content: "ようこそ。クリックするか、Enterを押して続行してください。"
-    },
-    {
-        id: 1,
-        content: "これは限定じゃんけんです。基本的にはじゃんけんですが、ライフと制限カードがあります。"
-    },
-    {
-        id: 2,
-        content: "各カードは4枚ずつあり、カードを使用するたびに消費されます。右下の星がライフです。星やカードを全て失うとゲームオーバーです。"
-    },
-    {
-        id: 3,
-        content: "カイジと競争してゲームに勝利しよう！"
-    },
-    {
-        id: 4,
-        content: "ゲーム開始！"
-    },
-    {
-        id: 5,
-        content: "カードを選択してください。"
-    },
-    {
-        id: 6,
-        content: "セット"
-    },
-    {
-        id: 7,
-        content: "オープン!"
-    },
-    {
-        id: 8,
-        content: `It's fair!`
-    },
-    {
-        id: 9,
-        content: `You lose!`
-    },
-    {
-        id: 10,
-        content: `You win!`
-    },
-    {
-        id: 11,
-        content: "Current status. Prepare for next round."
-    }
-];
 
-let textContents = txtEng;
+const textBox = document.getElementById('text-box');
+const text = document.getElementById('text');
+const txtEnd = document.querySelector('.sparkle');
 
 let isAllTyped = true;
-let typeSpeed = 30;
-const typeText = (msg) => {
+let txtSpeed = 30;
+const typeTxt = (msg) => {
     text.textContent = '';
-    textEnd.style.display = 'none';
+    txtEnd.style.display = 'none';
     isAllTyped = false;
     let i = 0;
-    playAudio(txtSFX);
     window.txtTyping = setInterval(msg => {
         if (i === msg.length) {
-            clearInterval(window.txtTyping);
-            textEnd.style.display = 'inline';
-            stopAudio(txtSFX);
-            isAllTyped = true;
-            textLine++;
+            cancelType();
+            delayNext(500);
+            return;
+        }
+        text.textContent += msg[i++];
+    }, txtSpeed, msg);
+};
+
+const cancelType = () => {
+    txtEnd.style.display = 'inline-block';
+    isAllTyped = true;
+    clearInterval(window.txtTyping);
+};
+
+let isDelay = false;
+const delayNext = (time) => {
+    isDelay = true;
+    setTimeout(() => {
+        isDelay = false;
+    }, time);
+};
+
+let txtLine = 0;
+const nextTxt = (contents) => {
+    if (isAllTyped && !isDelay) {
+        if (isTxtOver) {
             return;
         };
-        text.textContent += msg[i++];
-    }, typeSpeed, msg);
-};
-
-//textLine = textContents id
-let textLine = 1;
-const nextText = (contents) => {
-    if (textLine === contents.length) {
-        return;
+        typeTxt(contents[txtLine++].content);
     } else {
-        typeText(contents[textLine].content);
-        return;
-    }; 
+        cancelType();
+        text.textContent = '';
+        text.textContent = contents[txtLine - 1].content;
+        delayNext(700);
+    };
+    txtOver(contents);
 };
 
-//first msg
-text.textContent = textContents[0].content;
-
-const gameOver = () => {
-    if (textLine < 8) {
-        return;
-    };
-
-    if (rockNum === 0 && paperNum === 0 && scissorsNum === 0) {
-        text.textContent = 'Game over. You lose all of your cards.'
+let isTxtOver = false;
+const txtOver = (contents) => {
+    if (txtLine >= contents.length) {
+        isTxtOver = true;
     };
 };
 
-const game = () => {
-    //play bgm
-    if (textLine === 1) {
-        playAudio(bgm); 
-    };
-
-    //close reveal
-    if (textLine !== 7 && isRevealShowing) {
-        revealChoices.classList.toggle('hidden');
-        isRevealShowing = false;
-    };
-    //card result
-    if (textLine === 8) {
-        cardResult();
-        textLine = 10;
-        return;
-    };
-    //replay round
-    if (textLine === 12) {
-        textLine = 5;
-    };
-
-    //play txt
-    if (!isCardsShowing) {
-        if (isAllTyped) {
-            nextText(textContents);
-            
-        } else {
-            clearInterval(window.txtTyping);
-            text.textContent = textContents[textLine].content;
-            textEnd.style.display = 'inline';
-            isAllTyped = true;
-            textLine++;
-            stopAudio(txtSFX);
-            
-        };
-    } else {
-        return;
-    };
-
-     //show card choices
-     if (textLine === 5) {
-        showChoices();
-    };
-
-    if (textLine === 7) {
-        showReveal();
-    };
-
-    console.log(textLine)
-};
-
-//input function
-textBox.addEventListener('click', game);
-
-window.addEventListener('keydown', (e) => {
-    switch (e.key) {
-        case 'Enter':
-            game();
-            
-            break;
-        case ' ':
-            
-            break;
-    }
+textBox.addEventListener('click', () => {
+    nextTxt(txtEng);
 });
 
-//header buttons
-const aboutBtn = document.getElementById('aboutBtn');
-const restartBtn = document.getElementById('restartBtn');
-const langBtn = document.getElementById('langBtn');
-const bgmBtn = document.getElementById('bgmBtn');
-const bgmIcon = document.getElementById('bgmIcon');
 
-restartBtn.addEventListener('click', () => {
-    location.reload();
-});
-
-langBtn.addEventListener('click', () => {
-    clearInterval(window.txtTyping);
-    text.textContent = '';
-
-    if (langBtn.textContent === '日本語') {
-        //change to Eng
-        langBtn.textContent = 'English';
-        restartBtn.textContent = 'リスタート';
-        aboutBtn.textContent = '概要';
-        document.querySelector('html').setAttribute('lang', 'ja');
-
-        typeSpeed = 60;
-        textContents = txtJap;
-        typeText(textContents[textLine].content);
-        textEnd.style.marginLeft = '-10px';
-
-    } else if (langBtn.textContent === 'English') {
-        //change to Jap
-        langBtn.textContent = '日本語';
-        restartBtn.textContent = 'Restart';
-        aboutBtn.textContent = 'About';
-        document.querySelector('html').setAttribute('lang', 'en');
-
-        typeSpeed = 30;
-        textContents = txtEng;
-        typeText(textContents[textLine].content);
-        textEnd.style.marginLeft = '5px';
-    }
-
-    //prevent font size change el height
-    resizeElHeight();
-});
-
-bgmBtn.addEventListener('click', () => {
-    if (isAudioOpen) {
-        bgmIcon.classList.remove('fa-volume-high');
-        bgmIcon.classList.add('fa-volume-xmark');
-        
-        stopAudio(bgm);
-        stopAudio(txtSFX);
-        isAudioOpen = false; //put last to prevent stopAudio return
-
-    } else {
-        bgmIcon.classList.remove('fa-volume-xmark');
-        bgmIcon.classList.add('fa-volume-high');
-        isAudioOpen = true;
-
-        //replay audio
-        if (textLine !== 0) {
-            playAudio(bgm);
-        };
-
-        if (!isAllTyped) {
-            playAudio(txtSFX);
-        };
-    }
-})
