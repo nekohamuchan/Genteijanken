@@ -171,19 +171,19 @@ const playerStar = document.getElementById('player-lp');
 let kaijiLive = 3;
 let playerLive = 3;
 
-const removeStar = (who, live) => {
+const removeStar = (who, whoLive) => {
     who.lastElementChild.classList.add('remove-star');
     setTimeout(() => {
         who.removeChild(who.lastElementChild);
     }, 1000);
-    live--;
+    whoLive--;
 };
 
-const addStar = (who, live) => {
+const addStar = (who, whoLive) => {
     const liveP = document.createElement('div');
     liveP.classList.add('life-point');
     who.append(liveP);
-    live++;
+    whoLive++;
 };
 
 //text

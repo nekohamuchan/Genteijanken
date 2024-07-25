@@ -62,16 +62,15 @@ const playerStar = document.getElementById('player-lp');
 let kaijiLive = 3;
 let playerLive = 3;
 
-const removeStar = (who, live) => {
+const removeStar = (who) => {
     who.lastElementChild.classList.add('remove-star');
     playAudio(starSFX1);
     setTimeout(() => {
         who.removeChild(who.lastElementChild);
     }, 1000);
-    live--;
 };
 
-const addStar = (who, live) => {
+const addStar = (who) => {
     const liveP = document.createElement('div');
     liveP.classList.add('life-point');
     who.append(liveP);
@@ -80,8 +79,17 @@ const addStar = (who, live) => {
     setTimeout(() => {
         liveP.classList.remove('add-star');
     }, 1000);
-    live++;
 };
+
+const addLife = () => {
+    kaijiLive--;
+    playerLive++;
+};
+
+const loseLife = () => {
+    playerLive--;
+    kaijiLive++;
+}
 
 //card
 const cardChoicesSection = document.getElementById('player-choices');
@@ -111,14 +119,17 @@ const showChoices = () => {
     cardChoicesSection.classList.toggle('hidden');
     darkenScreen.classList.toggle('hidden');
     isCardShowing = true;
+    cardChoices[0].style.pointerEvents = 'none';
+    cardChoices[1].style.pointerEvents = 'none';
+    cardChoices[2].style.pointerEvents = 'none';
+    setTimeout(() => {
+        cardChoices[0].style.pointerEvents = 'auto';
+        cardChoices[1].style.pointerEvents = 'auto';
+        cardChoices[2].style.pointerEvents = 'auto';
+    }, 1000);
 };
 
 cardChoices.forEach(choice => {
-    choice.style.pointerEvents = 'none';
-    setTimeout(() => {
-        choice.style.pointerEvents = 'auto';
-    }, 3000);
-
     choice.addEventListener('click', () => {
         playAudio(cardSFX1);
         playerChoice = choice.id;
@@ -193,6 +204,7 @@ const roundResult = () => {
         }, 500)
         setTimeout(() => {
             addStar(kaijiStar, kaijiLive);
+            loseLife();
         }, 1300);
     } else if ((playerChoice === 'rock' && kaijiChoice === 'scissors') || 
     (playerChoice === 'paper' && kaijiChoice === 'rock') || 
@@ -203,10 +215,11 @@ const roundResult = () => {
         }, 500)
         setTimeout(() => {
             addStar(playerStar, playerLive);
+            addLife();
         }, 1300);
     };
     nextTxt(txtContents);
-    delayNext(2500);
+    delayNext(2800);
 };
 
 const replayRound = () => {
@@ -335,6 +348,11 @@ const nextTxt = (contents) => {
             return;
         };
         typeTxt(contents[++txtLine].content);
+
+        //end dialogue
+        if (kaijiLive <= 0 || playerLive <= 0 || (rockNum === 0 && paperNum === 0 && scissorsNum === 0)) {
+            isGameOver = true;
+        };
     } else {
         cancelType();
         text.textContent = '';
@@ -356,16 +374,13 @@ const txtOver = (contents) => {
 
 let isGameOver = false;
 const gameOver = () => {
-    if (!isAllTyped || isGameOver) {
+    if (!isAllTyped || isDelay || isGameOver) {
         return;
     };
 
     //player win
     if (kaijiLive <= 0) {
-        txtLine = 12;
-        typeTxt(txtContents);
-        isGameOver = true;
-        return;
+        txtLine = 11;
     };
     //player lose
     if (playerLive <= 0 || (rockNum === 0 && paperNum === 0 && scissorsNum === 0)) {
@@ -374,9 +389,6 @@ const gameOver = () => {
         } else if (rockNum === 0 && paperNum === 0 && scissorsNum === 0) {
             txtLine = 14;
         };
-        typeTxt(txtContents);
-        isGameOver = true;
-        return;
     };
 };
 
@@ -414,7 +426,7 @@ const game = () => {
     };
     
 };
-kaijiLive = 0;
+
 
 text.textContent = txtContents[0].content
 textBox.addEventListener('click', () => {
@@ -425,7 +437,8 @@ textBox.addEventListener('click', () => {
 window.addEventListener('keydown', (e) => {
     switch (e.key) {
         case 'Enter':
-            game();
+            
+            console.log(playerLive, kaijiLive);
             break;
     };
 });
