@@ -25,6 +25,11 @@ const cardSFX2 = new Audio('./sounds/card-open.mp3');
 cardSFX1.volume = 0.7;
 cardSFX2.volume = 0.7;
 
+const starSFX1 = new Audio('./sounds/swish1_1.mp3');
+const starSFX2 = new Audio('./sounds/poka01.mp3');
+starSFX1.volume = 0.5;
+starSFX2.volume = 0.5;
+
 const playAudio = audio => {
     if (!isAudioOpen) {
         return;
@@ -174,6 +179,33 @@ const txtOver = (contents) => {
     };
 };
 
+//lives
+const kaijiStar = document.getElementById('kaiji-lp');
+const playerStar = document.getElementById('player-lp');
+let kaijiLive = 3;
+let playerLive = 3;
+
+const removeStar = (who, live) => {
+    who.lastElementChild.classList.add('remove-star');
+    playAudio(starSFX1);
+    setTimeout(() => {
+        who.removeChild(who.lastElementChild);
+    }, 1000);
+    live--;
+};
+
+const addStar = (who, live) => {
+    const liveP = document.createElement('div');
+    liveP.classList.add('life-point');
+    who.append(liveP);
+    liveP.classList.add('add-star');
+    playAudio(starSFX2);
+    setTimeout(() => {
+        liveP.classList.remove('add-star');
+    }, 1000);
+    live++;
+};
+
 //card
 const cardChoicesSection = document.getElementById('player-choices');
 const cardChoices = document.querySelectorAll('#player-choices > *');
@@ -205,6 +237,11 @@ const showChoices = () => {
 };
 
 cardChoices.forEach(choice => {
+    choice.style.pointerEvents = 'none';
+    setTimeout(() => {
+        choice.style.pointerEvents = 'auto';
+    }, 1000);
+
     choice.addEventListener('click', () => {
         playAudio(cardSFX1);
         playerChoice = choice.id;
@@ -273,13 +310,26 @@ const roundResult = () => {
     } else if ((kaijiChoice === 'rock' && playerChoice === 'scissors') || 
     (kaijiChoice === 'paper' && playerChoice === 'rock') || 
     (kaijiChoice === 'scissors' && playerChoice === 'paper')) {
-        txtLine = 8; 
+        txtLine = 8;
+        setTimeout(() => {
+            removeStar(playerStar, playerLive);
+        }, 500)
+        setTimeout(() => {
+            addStar(kaijiStar, kaijiLive);
+        }, 1300);
     } else if ((playerChoice === 'rock' && kaijiChoice === 'scissors') || 
     (playerChoice === 'paper' && kaijiChoice === 'rock') || 
     (playerChoice === 'scissors' && kaijiChoice === 'paper')) {
         txtLine = 9;
+        setTimeout(() => {
+            removeStar(kaijiStar, kaijiLive);
+        }, 500)
+        setTimeout(() => {
+            addStar(playerStar, playerLive);
+        }, 1300);
     };
     nextTxt(txtContents);
+    delayNext(2000);
 };
 
 const replayRound = () => {
@@ -301,7 +351,7 @@ const game = () => {
         isReveal = false;
     };
 
-    if (txtLine === 7) {
+    if (txtLine === 7 && isAllTyped) {
         roundResult();
         return;
     };
