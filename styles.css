@@ -354,6 +354,46 @@ ul {
     animation-iteration-count: 1;
 }
 
+/* End */
+.end {
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.515);
+}
+
+.replay-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.replay-div button {
+    z-index: 3;
+    margin: 0 50px;
+    padding: 0 30px;
+    font-family: "Sawarabi Mincho", serif;;
+    font-size: 40px;
+    text-shadow: white 0 0 5px;
+    color: white;
+    background-color: black;
+    box-shadow: 0 0 10px black;
+    border: 3px double white;
+}
+
+.replay-div button:hover {
+    scale: 1.08;
+    background-color: red;
+}
+
+.replay-div button:active {
+    scale: 1.04;
+}
+
 /* Others */
 .hidden {
     display: none;

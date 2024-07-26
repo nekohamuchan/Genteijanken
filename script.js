@@ -16,19 +16,18 @@ let isAudioOpen = true;
 const bgm = new Audio('./sounds/Espoir.mp3');
 bgm.volume = 0.2;
 bgm.loop = true;
-
 const txtSFX = new Audio('./sounds/text-scroll-1.mp3');
 txtSFX.loop = true;
-
 const cardSFX1 = new Audio('./sounds/card-choose.mp3');
 const cardSFX2 = new Audio('./sounds/card-open.mp3');
 cardSFX1.volume = 0.7;
 cardSFX2.volume = 0.7;
-
 const starSFX1 = new Audio('./sounds/swish1_1.mp3');
 const starSFX2 = new Audio('./sounds/poka01.mp3');
 starSFX1.volume = 0.4;
 starSFX2.volume = 0.4;
+const clapSFX = new Audio('./sounds/short_clap2.mp3');
+clapSFX.volume = 0.5;
 
 const playAudio = audio => {
     if (!isAudioOpen) {
@@ -54,7 +53,6 @@ window.onload = () => {
     }, 1700);
 
 };
-
 
 //lives
 const kaijiStar = document.getElementById('kaiji-lp');
@@ -299,11 +297,15 @@ const txtEng = [
     },
     {
         id: 13,
-        content: "You lose! You've lose all of your lives! "
+        content: "You lose! You've lose all of your lives!"
     },
     {
         id: 14,
-        content: "You lose! You've run out all of your cards! "
+        content: "You lose! You've run out all of your cards!"
+    },
+    {
+        id: 15,
+        content: "Wanna try again?"
     },
 ];
 let txtContents = txtEng;
@@ -391,6 +393,7 @@ const gameOver = () => {
     //player win
     if (kaijiLive <= 0) {
         txtLine = 11;
+        playAudio(clapSFX);
     };
     //player lose
     if (playerLive <= 0 || (rockNum === 0 && paperNum === 0 && scissorsNum === 0)) {
@@ -402,8 +405,17 @@ const gameOver = () => {
     };
 };
 
-const update = () => {
+//end screens
+const endScreen = document.querySelector('end');
 
+const replayCheck = () => {
+    if (isGameOver && isAllTyped) {
+        isGameOver = false;
+        txtLine = 14;
+
+        textBox.style.pointerEvents = 'none';
+
+    };
 };
 
 const game = () => {
@@ -441,10 +453,12 @@ const game = () => {
     
 };
 
-
+kaijiLive = 0;
 text.textContent = txtContents[0].content
 textBox.addEventListener('click', () => {
+    
     gameOver();
+    replayCheck();
     game();
 });
 
