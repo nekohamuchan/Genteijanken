@@ -27,8 +27,8 @@ cardSFX2.volume = 0.7;
 
 const starSFX1 = new Audio('./sounds/swish1_1.mp3');
 const starSFX2 = new Audio('./sounds/poka01.mp3');
-starSFX1.volume = 0.5;
-starSFX2.volume = 0.5;
+starSFX1.volume = 0.4;
+starSFX2.volume = 0.4;
 
 const playAudio = audio => {
     if (!isAudioOpen) {
@@ -194,10 +194,13 @@ const closeReveal = () => {
 
 const roundResult = () => {
     if (kaijiChoice === playerChoice) {
+        txtContents[8].content = txtContents[8].content.replace("x", kaijiChoice);
         txtLine = 7;
     } else if ((kaijiChoice === 'rock' && playerChoice === 'scissors') || 
     (kaijiChoice === 'paper' && playerChoice === 'rock') || 
     (kaijiChoice === 'scissors' && playerChoice === 'paper')) {
+        txtContents[9].content = txtContents[9].content.replace("x", capFirst(kaijiChoice));
+        txtContents[9].content = txtContents[9].content.replace("y", playerChoice);
         txtLine = 8;
         setTimeout(() => {
             removeStar(playerStar, playerLive);
@@ -209,6 +212,8 @@ const roundResult = () => {
     } else if ((playerChoice === 'rock' && kaijiChoice === 'scissors') || 
     (playerChoice === 'paper' && kaijiChoice === 'rock') || 
     (playerChoice === 'scissors' && kaijiChoice === 'paper')) {
+        txtContents[10].content = txtContents[10].content.replace("x", kaijiChoice);
+        txtContents[10].content = txtContents[10].content.replace("y", capFirst(playerChoice));
         txtLine = 9;
         setTimeout(() => {
             removeStar(kaijiStar, kaijiLive);
@@ -219,7 +224,7 @@ const roundResult = () => {
         }, 1300);
     };
     nextTxt(txtContents);
-    delayNext(2800);
+    delayNext(3000);
 };
 
 const replayRound = () => {
@@ -229,6 +234,9 @@ const replayRound = () => {
     } else if (txtLine === 11) {
         txtLine = 4; 
     };
+    txtContents[8].content = "It's a tie! Both are x!";
+    txtContents[9].content = "You lose! x beats y!";
+    txtContents[10].content = "You win! y beats x!";
 };
 
 //text
@@ -271,15 +279,15 @@ const txtEng = [
     },
     {
         id: 8,
-        content: `It's fair! Both are ${kaijiChoice}.`
+        content: "It's a tie! Both are x!"
     },
     {
         id: 9,
-        content: `You lose! ${capFirst(kaijiChoice)} beats ${playerChoice}.`
+        content: "You lose! x beats y!"
     },
     {
         id: 10,
-        content: `You win! ${capFirst(playerChoice)} beats ${kaijiChoice}`
+        content: "You win! y beats x!"
     },
     {
         id: 11,
@@ -350,7 +358,9 @@ const nextTxt = (contents) => {
         typeTxt(contents[++txtLine].content);
 
         //end dialogue
-        if (kaijiLive <= 0 || playerLive <= 0 || (rockNum === 0 && paperNum === 0 && scissorsNum === 0)) {
+        if (txtLine >= 8 &&
+            (kaijiLive <= 0 || playerLive <= 0 || 
+            (rockNum === 0 && paperNum === 0 && scissorsNum === 0))) {
             isGameOver = true;
         };
     } else {
@@ -385,11 +395,15 @@ const gameOver = () => {
     //player lose
     if (playerLive <= 0 || (rockNum === 0 && paperNum === 0 && scissorsNum === 0)) {
         if (playerLive <= 0) {
-            txtLine = 13;
+            txtLine = 12;
         } else if (rockNum === 0 && paperNum === 0 && scissorsNum === 0) {
-            txtLine = 14;
+            txtLine = 13;
         };
     };
+};
+
+const update = () => {
+
 };
 
 const game = () => {
@@ -443,3 +457,4 @@ window.addEventListener('keydown', (e) => {
     };
 });
 
+//check game play, then add sfx, and ending screen, menu
