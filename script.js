@@ -43,8 +43,10 @@ const stopAudio = audio => {
     audio.currentTime = 0;
 };
 
-//after page onload
+//start menu
+const startMenu = document.querySelector('.start-menu');
 const startScreen = document.querySelector('.start');
+startMenu.classList.toggle('hidden');
 window.onload = () => {
     //start screen
     startScreen.style.animationName = 'start';
@@ -369,7 +371,7 @@ const nextTxt = (contents) => {
         cancelType();
         text.textContent = '';
         text.textContent = contents[txtLine].content;
-        delayNext(500);
+        delayNext(800);
     };
 
     txtOver(contents);
@@ -402,19 +404,6 @@ const gameOver = () => {
         } else if (rockNum === 0 && paperNum === 0 && scissorsNum === 0) {
             txtLine = 13;
         };
-    };
-};
-
-//end screens
-const endScreen = document.querySelector('end');
-
-const replayCheck = () => {
-    if (isGameOver && isAllTyped) {
-        isGameOver = false;
-        txtLine = 14;
-
-        textBox.style.pointerEvents = 'none';
-
     };
 };
 
@@ -453,10 +442,41 @@ const game = () => {
     
 };
 
-kaijiLive = 0;
+//end screens
+const endScreen = document.querySelector('.end');
+const replayScreen = document.querySelector('.replay-div');
+const replayBtn = document.querySelectorAll('#replay-div > button');
+
+const replayCheck = () => {
+    if (isDelay) {
+        return;
+    };
+
+    if (isGameOver && isAllTyped) {
+        isGameOver = false;
+        txtLine = 14;
+        textBox.style.pointerEvents = 'none';
+        
+        endScreen.classList.toggle('hidden');
+        replayScreen.classList.toggle('hidden');
+    };
+};
+
+replayBtn.forEach(btn => {
+    btn.addEventListener('click', () => {
+        if (btn.id === 'replay-yes') {
+
+        } else if (btn.id === 'replay-no') {
+
+        };
+    });
+});
+
+
+
+playerLive = 0;
 text.textContent = txtContents[0].content
 textBox.addEventListener('click', () => {
-    
     gameOver();
     replayCheck();
     game();
@@ -466,7 +486,6 @@ window.addEventListener('keydown', (e) => {
     switch (e.key) {
         case 'Enter':
             
-            console.log(playerLive, kaijiLive);
             break;
     };
 });
