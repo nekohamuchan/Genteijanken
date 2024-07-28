@@ -28,6 +28,27 @@ starSFX1.volume = 0.4;
 starSFX2.volume = 0.4;
 const clapSFX = new Audio('./sounds/short_clap2.mp3');
 clapSFX.volume = 0.5;
+const selectSFX = new Audio('./sounds/select.mp3');
+const hoverSFX = new Audio('./sounds/hover.mp3');
+selectSFX.volume = 0.8;
+hoverSFX.volume = 0.8;
+
+const allBtn = document.querySelectorAll('.link');
+allBtn.forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+        playAudio(hoverSFX);
+        setTimeout(() => {
+            stopAudio(hoverSFX);
+        }, 150);
+    });
+
+    btn.addEventListener('click', () => {
+        playAudio(selectSFX);
+        setTimeout(() => {
+            stopAudio(selectSFX);
+        }, 400);
+    });
+});
 
 const playAudio = audio => {
     if (!isAudioOpen) {
@@ -44,17 +65,36 @@ const stopAudio = audio => {
 };
 
 //start menu
+const mainGame = document.querySelector('main');
 const startMenu = document.querySelector('.start-menu');
-const startScreen = document.querySelector('.start');
+const screeN = document.getElementById('screen');
+const startBtn = document.getElementById('start-button');
+const enBtn = document.getElementById('en-button');
+const jpBtn = document.getElementById('jp-button');
 startMenu.classList.toggle('hidden');
-window.onload = () => {
-    //start screen
-    startScreen.style.animationName = 'start';
-    setTimeout(() => {
-        startScreen.style.display = 'none';
-    }, 1700);
+screeN.classList.toggle('hidden');
+screeN.classList.toggle('start-ease');
+screeN.classList.toggle('darken');
 
-};
+setTimeout(() => {
+    screeN.classList.toggle('hidden');
+    screeN.classList.toggle('load');
+}, 2000);
+
+startBtn.addEventListener('click', () => {
+    mainGame.classList.toggle('hidden');
+    resizeElHeight();
+    screeN.classList.toggle('hidden');
+    screeN.classList.toggle('start-ease');
+    setTimeout(() => {
+        startMenu.classList.toggle('hidden');
+    }, 2000);
+    setTimeout(() => {
+        screeN.classList.toggle('hidden');
+        screeN.classList.toggle('start-ease');
+    }, 3300);
+});
+
 
 //lives
 const kaijiStar = document.getElementById('kaiji-lp');
@@ -105,7 +145,6 @@ let playerChoice = '';
 let kaijiChoice = '';
 
 let isCardShowing = false;
-const darkenScreen = document.querySelector('.darken');
 const showChoices = () => {
     if (rockNum === 0) {
         cardChoices[0].style.display = 'none';
@@ -117,7 +156,8 @@ const showChoices = () => {
         cardChoices[2].style.display = 'none';
     };
     cardChoicesSection.classList.toggle('hidden');
-    darkenScreen.classList.toggle('hidden');
+    screeN.classList.toggle('hidden');
+    screeN.classList.toggle('darken');
     isCardShowing = true;
     cardChoices[0].style.pointerEvents = 'none';
     cardChoices[1].style.pointerEvents = 'none';
@@ -130,6 +170,12 @@ const showChoices = () => {
 };
 
 cardChoices.forEach(choice => {
+    choice.addEventListener('mouseenter', () => {
+        playAudio(hoverSFX);
+        setTimeout(() => {
+            stopAudio(hoverSFX);
+        }, 150);
+    });
     choice.addEventListener('click', () => {
         playAudio(cardSFX1);
         playerChoice = choice.id;
@@ -147,7 +193,8 @@ cardChoices.forEach(choice => {
         nextTxt(txtContents);
         isCardShowing = false;
         cardChoicesSection.classList.toggle('hidden');
-        darkenScreen.classList.toggle('hidden');
+        screeN.classList.toggle('hidden');
+        screeN.classList.toggle('darken');
     });
 });
 
@@ -326,7 +373,7 @@ const typeTxt = (msg) => {
     playAudio(txtSFX);
     window.txtTyping = setInterval(msg => {
         if (i === msg.length) {
-            delayNext(500);
+            delayNext(700);
             cancelType();
             return;
         };
@@ -371,7 +418,7 @@ const nextTxt = (contents) => {
         cancelType();
         text.textContent = '';
         text.textContent = contents[txtLine].content;
-        delayNext(800);
+        delayNext(700);
     };
 
     txtOver(contents);
@@ -474,7 +521,7 @@ replayBtn.forEach(btn => {
 
 
 
-playerLive = 0;
+// playerLive = 0;
 text.textContent = txtContents[0].content
 textBox.addEventListener('click', () => {
     gameOver();
