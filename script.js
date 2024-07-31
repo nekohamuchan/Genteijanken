@@ -1,6 +1,6 @@
 //el height
-let headerH = document.querySelector('header').offsetHeight;
 const root = document.documentElement;
+let headerH = document.querySelector('header').offsetHeight;
 root.style.setProperty('--header-height', headerH + 'px');
 const resizeElHeight = () => {
     headerH = document.querySelector('header').offsetHeight;
@@ -590,4 +590,9 @@ window.addEventListener('keydown', (e) => {
     };
 });
 
-//check game play, then add sfx, and ending screen, menu
+//header
+const headerBar = document.querySelector('.fa-bars');
+const headerMenu = document.querySelector('header > ul');
+headerBar.addEventListener('click', () => {
+    headerMenu.classList.toggle('hidden');
+})

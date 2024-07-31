@@ -34,6 +34,11 @@
     100% {opacity: 60%;}
 }
 
+@keyframes header-menu {
+    0% {padding: 0 30px; gap: 10px; transform: scaleY(0);}
+    100% {padding: 30px; gap: 30px; transform: scaleY(1);}
+}
+
 @keyframes sparkle {
     0% {opacity: 100%;}
     50% {opacity: 0;}
@@ -97,6 +102,8 @@ main::before {
 }
 
 main {
+    width: 100vw;
+    height: 100vh;
     overflow: hidden;
 }
 
@@ -112,6 +119,7 @@ main::after {
     background-size: cover;
     background-position: center;
     filter: blur(2px);
+    scale: 1.1;
 }
 
 /* Screen */
@@ -158,7 +166,6 @@ main::after {
     top: 50px;
     left: 100px;
     font-size: 40px;
-    filter: drop-shadow(10px 8px 0 rgb(167, 0, 0));
 }
 
 .start-menu > h1 > span:nth-child(1) {
@@ -166,13 +173,15 @@ main::after {
 }
 
 .start-menu > ul {
+    list-style-type: none;
     position: inherit;
     font-size: 30px;
     left: 115px;
     bottom: 160px;
     display: flex;
     flex-direction: column;
-    align-items: baseline;
+    align-items: start;
+    gap: 20px;
 }
 
 /* start menu card */
@@ -260,13 +269,28 @@ header > * {
     flex-shrink: 0;
 }
 
-ul {
+header > ul {
+    position: absolute;
+    top: var(--header-height);
+    right: 0;
     display: flex;
-    align-items: center;
-    padding: 0;
-    gap: 20px;
+    flex-direction: column;
+    align-items: end;
     list-style-type: none;
     font-size: 24px;
+    background-color: black;
+    box-shadow: 0 5px 10px black;
+    animation-name: header-menu;
+    animation-duration: 0.8s;
+    animation-fill-mode: forwards;
+    transform-origin: top;
+}
+
+header > ul > li {
+    animation-name: load;
+    animation-duration: 1.3s;
+    animation-direction: reverse;
+    animation-fill-mode: forwards;
 }
 
 .link:hover {
@@ -279,6 +303,10 @@ ul {
 
 .link:active {
     transform: scale(1.05);
+}
+
+header > i {
+    font-size: 25px;
 }
 
 /* Life section */
