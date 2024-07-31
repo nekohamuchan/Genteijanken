@@ -72,7 +72,9 @@ const startMenu = document.querySelector('.start-menu');
 const screeN = document.getElementById('screen');
 const startBtn = document.getElementById('start-button');
 const enBtn = document.getElementById('en-button');
+const enIcon = document.querySelector('#en-button > i');
 const jpBtn = document.getElementById('jp-button');
+const jpIcon = document.querySelector('#jp-button > i');
 startMenu.classList.toggle('hidden');
 screeN.classList.toggle('hidden');
 screeN.classList.toggle('start-ease');
@@ -97,6 +99,20 @@ startBtn.addEventListener('click', () => {
         screeN.classList.toggle('start-ease');
         playAudio(bgm);
     }, 3300);
+});
+
+enBtn.addEventListener('click', () => {
+    enIcon.classList.add('fa-square-check');
+    enIcon.classList.remove('fa-square');
+    jpIcon.classList.remove('fa-square-check');
+    jpIcon.classList.add('fa-square');
+});
+
+jpBtn.addEventListener('click', () => {
+    jpIcon.classList.add('fa-square-check');
+    jpIcon.classList.remove('fa-square');
+    enIcon.classList.remove('fa-square-check');
+    enIcon.classList.add('fa-square');
 });
 
 

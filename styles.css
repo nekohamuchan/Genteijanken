@@ -189,6 +189,10 @@ main::after {
     gap: 20px;
 }
 
+.start-menu i {
+    margin-right: 10px;
+}
+
 /* start menu card */
 .start-menu > div {
     position: absolute;
