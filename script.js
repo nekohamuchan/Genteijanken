@@ -32,8 +32,24 @@ const selectSFX = new Audio('./sounds/select.mp3');
 const hoverSFX = new Audio('./sounds/hover.mp3');
 selectSFX.volume = 0.8;
 hoverSFX.volume = 0.8;
+const boatSFX = new Audio('./sounds/boat_whistle.mp3');
+boatSFX.volume = 0.9;
 
-const allBtn = document.querySelectorAll('.link');
+const playAudio = audio => {
+    if (!isAudioOpen) {
+        return;
+    };
+    audio.play();
+};
+const stopAudio = audio => {
+    if (!isAudioOpen) {
+        return;
+    }
+    audio.pause();
+    audio.currentTime = 0;
+};
+
+const allBtn = document.querySelectorAll('.link, .replay-div > button');
 allBtn.forEach(btn => {
     btn.addEventListener('mouseenter', () => {
         playAudio(hoverSFX);
@@ -49,20 +65,6 @@ allBtn.forEach(btn => {
         }, 400);
     });
 });
-
-const playAudio = audio => {
-    if (!isAudioOpen) {
-        return;
-    };
-    audio.play();
-};
-const stopAudio = audio => {
-    if (!isAudioOpen) {
-        return;
-    }
-    audio.pause();
-    audio.currentTime = 0;
-};
 
 //start menu
 const mainGame = document.querySelector('main');
@@ -82,16 +84,18 @@ setTimeout(() => {
 }, 2000);
 
 startBtn.addEventListener('click', () => {
-    mainGame.classList.toggle('hidden');
-    resizeElHeight();
+    playAudio(boatSFX);
     screeN.classList.toggle('hidden');
     screeN.classList.toggle('start-ease');
+    mainGame.classList.toggle('hidden');
+    resizeElHeight();
     setTimeout(() => {
         startMenu.classList.toggle('hidden');
     }, 2000);
     setTimeout(() => {
         screeN.classList.toggle('hidden');
         screeN.classList.toggle('start-ease');
+        playAudio(bgm);
     }, 3300);
 });
 
@@ -144,7 +148,7 @@ let scissorsNum = 4;
 let playerChoice = '';
 let kaijiChoice = '';
 
-let isCardShowing = false;
+let isShowing = false;
 const showChoices = () => {
     if (rockNum === 0) {
         cardChoices[0].style.display = 'none';
@@ -158,7 +162,7 @@ const showChoices = () => {
     cardChoicesSection.classList.toggle('hidden');
     screeN.classList.toggle('hidden');
     screeN.classList.toggle('darken');
-    isCardShowing = true;
+    isShowing = true;
     cardChoices[0].style.pointerEvents = 'none';
     cardChoices[1].style.pointerEvents = 'none';
     cardChoices[2].style.pointerEvents = 'none';
@@ -166,7 +170,7 @@ const showChoices = () => {
         cardChoices[0].style.pointerEvents = 'auto';
         cardChoices[1].style.pointerEvents = 'auto';
         cardChoices[2].style.pointerEvents = 'auto';
-    }, 1000);
+    }, 1200);
 };
 
 cardChoices.forEach(choice => {
@@ -191,7 +195,7 @@ cardChoices.forEach(choice => {
                 break;
         };
         nextTxt(txtContents);
-        isCardShowing = false;
+        isShowing = false;
         cardChoicesSection.classList.toggle('hidden');
         screeN.classList.toggle('hidden');
         screeN.classList.toggle('darken');
@@ -229,9 +233,9 @@ const showReveal = () => {
     applyCardChoices();
     revealChoices.classList.toggle('hidden');
     isReveal = true;
-    isCardShowing = true;
+    isShowing = true;
     setTimeout(() => {
-        isCardShowing = false;
+        isShowing = false;
     }, 2100);
 };
 
@@ -271,7 +275,6 @@ const roundResult = () => {
         }, 1300);
     };
     nextTxt(txtContents);
-    delayNext(3000);
 };
 
 const replayRound = () => {
@@ -435,17 +438,19 @@ const txtOver = (contents) => {
 
 let isGameOver = false;
 const gameOver = () => {
-    if (!isAllTyped || isDelay || isGameOver) {
+    if (!isAllTyped || isDelay || isGameOver || txtLine <= 8) {
         return;
     };
-
+    
     //player win
     if (kaijiLive <= 0) {
         txtLine = 11;
+        stopAudio(bgm);
         playAudio(clapSFX);
     };
     //player lose
     if (playerLive <= 0 || (rockNum === 0 && paperNum === 0 && scissorsNum === 0)) {
+        stopAudio(bgm);
         if (playerLive <= 0) {
             txtLine = 12;
         } else if (rockNum === 0 && paperNum === 0 && scissorsNum === 0) {
@@ -455,7 +460,7 @@ const gameOver = () => {
 };
 
 const game = () => {
-    if (isCardShowing || isDelay) {
+    if (isShowing || isDelay) {
         return;
     };
 
@@ -475,7 +480,6 @@ const game = () => {
     };
     
     nextTxt(txtContents);
-    console.log(txtLine);
     
     if (txtLine === 11 && isAllTyped) {
         replayRound();
@@ -485,21 +489,20 @@ const game = () => {
     };
     if (txtLine === 7) {
         showReveal();
-    };
-    
+    }; 
 };
 
 //end screens
 const endScreen = document.querySelector('.end');
 const replayScreen = document.querySelector('.replay-div');
-const replayBtn = document.querySelectorAll('#replay-div > button');
+const replayBtn = document.querySelectorAll('.replay-div > button');
 
 const replayCheck = () => {
-    if (isDelay) {
+    if (isDelay || !isGameOver) {
         return;
     };
 
-    if (isGameOver && isAllTyped) {
+    if (isGameOver && isAllTyped && txtLine >= 12) {
         isGameOver = false;
         txtLine = 14;
         textBox.style.pointerEvents = 'none';
@@ -509,20 +512,68 @@ const replayCheck = () => {
     };
 };
 
+const resetAll = () => {
+    //live
+    kaijiLive = 3;
+    playerLive = 3;
+    kaijiStar.innerHTML = `
+    <div class="life-point"></div>
+    <div class="life-point"></div>
+    <div class="life-point"></div>
+    `;
+    playerStar.innerHTML = `
+    <div class="life-point"></div>
+    <div class="life-point"></div>
+    <div class="life-point"></div>
+    `;
+    //card
+    rockNum = 4;
+    paperNum = 4;
+    scissorsNum = 4;
+    cardNum[0].textContent = rockNum;
+    cardNum[1].textContent = paperNum;
+    cardNum[2].textContent = scissorsNum;
+    cardChoices[0].style.display = 'block';
+    cardChoices[1].style.display = 'block';
+    cardChoices[2].style.display = 'block';
+    //txt
+    isTxtOver = false;
+    isGameOver = false;
+    txtLine = 0;
+    text.textContent = txtContents[0].content;
+    textBox.style.pointerEvents = 'auto';
+};
+
 replayBtn.forEach(btn => {
     btn.addEventListener('click', () => {
-        if (btn.id === 'replay-yes') {
+        screeN.classList.toggle('hidden');
+        screeN.classList.toggle('start-ease');
 
-        } else if (btn.id === 'replay-no') {
+        setTimeout(() => {
+            endScreen.classList.toggle('hidden');
+            replayScreen.classList.toggle('hidden');
+            resetAll();
+            if (btn.id === 'replay-yes') {
+                playAudio(bgm);
+            }
+            if (btn.id === 'replay-no') {
+                startMenu.classList.toggle('hidden');
+                mainGame.classList.toggle('hidden');
+            };
+        }, 2000);
 
-        };
+        setTimeout(() => {
+            screeN.classList.toggle('hidden');
+            screeN.classList.toggle('start-ease');
+        }, 3000);
     });
 });
 
+const test = () => {
 
+};
 
-// playerLive = 0;
-text.textContent = txtContents[0].content
+text.textContent = txtContents[0].content;
 textBox.addEventListener('click', () => {
     gameOver();
     replayCheck();
@@ -532,7 +583,9 @@ textBox.addEventListener('click', () => {
 window.addEventListener('keydown', (e) => {
     switch (e.key) {
         case 'Enter':
-            
+            gameOver();
+            replayCheck();
+            game();
             break;
     };
 });

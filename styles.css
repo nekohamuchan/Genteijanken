@@ -107,6 +107,7 @@ main::after {
     top: 0;
     width: 100vw;
     height: 100vh;
+    background-color: black;
     background-image: url(https://www.crownperth.com.au/getmedia/ae49898c-9fc6-477a-91f5-18a0c4cc4d1e/230818-Crown-Perth-Casino-Main-Gaming-Floor-1800x1200-2.jpg?height=1199);
     background-size: cover;
     background-position: center;
@@ -148,9 +149,8 @@ main::after {
     position: absolute;
     width: 100vw;
     height: 100vh;
-    min-width: 800px;
-    min-height: 700px;
-    background: radial-gradient(circle farthest-corner at 0px 0px, black 40%, rgb(234, 11, 37) 70%);    
+    background: radial-gradient(circle farthest-corner at 0px 0px, black 40%, rgb(234, 11, 37) 70%);
+    overflow: hidden;   
 }
 
 .start-menu > h1 {
@@ -502,6 +502,7 @@ ul {
 .replay-div button:hover {
     scale: 1.08;
     background-color: red;
+    cursor: pointer;
 }
 
 .replay-div button:active {
