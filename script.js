@@ -260,11 +260,13 @@ const closeReveal = () => {
 
 const roundResult = () => {
     if (kaijiChoice === playerChoice) {
+        //tie
         txtContents[8].content = txtContents[8].content.replace("x", kaijiChoice);
         txtLine = 7;
     } else if ((kaijiChoice === 'rock' && playerChoice === 'scissors') || 
     (kaijiChoice === 'paper' && playerChoice === 'rock') || 
     (kaijiChoice === 'scissors' && playerChoice === 'paper')) {
+        //lose
         txtContents[9].content = txtContents[9].content.replace("x", capFirst(kaijiChoice));
         txtContents[9].content = txtContents[9].content.replace("y", playerChoice);
         txtLine = 8;
@@ -278,6 +280,7 @@ const roundResult = () => {
     } else if ((playerChoice === 'rock' && kaijiChoice === 'scissors') || 
     (playerChoice === 'paper' && kaijiChoice === 'rock') || 
     (playerChoice === 'scissors' && kaijiChoice === 'paper')) {
+        //win
         txtContents[10].content = txtContents[10].content.replace("x", kaijiChoice);
         txtContents[10].content = txtContents[10].content.replace("y", capFirst(playerChoice));
         txtLine = 9;
@@ -294,9 +297,10 @@ const roundResult = () => {
 
 const replayRound = () => {
     if (txtLine === 8 || txtLine === 9 || txtLine === 10) {
+        //round end
         txtLine = 10;
-        
     } else if (txtLine === 11) {
+        //back to choose card
         txtLine = 4; 
     };
     txtContents[8].content = "It's a tie! Both are x!";
