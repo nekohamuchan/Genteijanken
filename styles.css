@@ -120,7 +120,7 @@ main::after {
     width: 100vw;
     height: 100vh;
     background-color: black;
-    background-image: url(https://www.crownperth.com.au/getmedia/ae49898c-9fc6-477a-91f5-18a0c4cc4d1e/230818-Crown-Perth-Casino-Main-Gaming-Floor-1800x1200-2.jpg?height=1199);
+    background-image: url(./imgs/bg.jpg);
     background-size: cover;
     background-position: center;
     filter: blur(2px);
@@ -265,7 +265,7 @@ main::after {
 /* Header */
 header {
     position: relative;
-    z-index: 3;
+    z-index: 4;
     padding: 5px 30px;
     height: auto;
     display: flex;
@@ -317,6 +317,65 @@ header > ul > li {
 
 header > i {
     font-size: 25px;
+}
+
+.about, .toSM {
+    position: absolute;
+    z-index: 3;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.about > div {
+    background-color: black;
+    margin-top: 10vh;
+    width: 600px;
+    height: 300px;
+    padding: 10px;
+    border: 5px double white;
+    font-size: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.toSM > div {
+    background-color: black;
+    margin-top: 20vh;
+    width: 550px;
+    height: 230px;
+    padding: 10px;
+    border: 5px double white;
+    font-size: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.toSM button {
+    font-family: "Sawarabi Mincho", serif;;
+    font-size: 30px;
+    text-shadow: white 0 0 5px;
+    color: white;
+    background-color: black;
+    border: 3px solid white;
+    width: 100px;
+    margin-top: 10px;
+}
+
+.about i, .toSM i {
+    align-self: flex-end;
+    font-size: 30px;
+}
+
+.about p, .toSM p {
+    width: 80%;
 }
 
 /* Life section */
@@ -537,13 +596,13 @@ header > i {
     border: 3px double white;
 }
 
-.replay-div button:hover {
+button:hover {
     scale: 1.08;
     background-color: red;
     cursor: pointer;
 }
 
-.replay-div button:active {
+button:active {
     scale: 1.04;
 }
 

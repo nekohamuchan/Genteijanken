@@ -49,7 +49,7 @@ const stopAudio = audio => {
     audio.currentTime = 0;
 };
 
-const allBtn = document.querySelectorAll('.link, .replay-div > button');
+const allBtn = document.querySelectorAll('.link, button');
 allBtn.forEach(btn => {
     btn.addEventListener('mouseenter', () => {
         playAudio(hoverSFX);
@@ -87,10 +87,10 @@ startBtn.addEventListener('click', () => {
     playAudio(boatSFX);
     screeN.classList.toggle('hidden');
     screeN.classList.toggle('start-ease');
-    mainGame.classList.toggle('hidden');
-    resizeElHeight();
     setTimeout(() => {
         startMenu.classList.toggle('hidden');
+        mainGame.classList.toggle('hidden');
+        resizeElHeight();
     }, 2000);
     setTimeout(() => {
         screeN.classList.toggle('hidden');
@@ -609,6 +609,12 @@ headerBar.addEventListener('click', () => {
 
 const volBtn = document.getElementById('volBtn');
 const volIcon = document.getElementById('volIcon');
+const aboutBtn = document.getElementById('aboutBtn');
+const about = document.querySelector('.about');
+const sMBTN = document.getElementById('startMenuBtn');
+const toSM = document.querySelector('.toSM');
+const restartBtn = document.getElementById('restart');
+const xMark = document.querySelectorAll('.fa-xmark');
 
 volBtn.addEventListener('click', () => {
     if (isAudioOpen) {
@@ -624,10 +630,47 @@ volBtn.addEventListener('click', () => {
     }
 });
 
+aboutBtn.addEventListener('click', () => {
+    about.classList.toggle('hidden');
+});
+
+sMBTN.addEventListener('click', () => {
+    toSM.classList.toggle('hidden');
+});
+
+restartBtn.addEventListener('click', () => {
+    screeN.classList.toggle('hidden');
+    screeN.classList.toggle('start-ease');
+    stopAudio(bgm);
+
+    setTimeout(() => {
+        toSM.classList.toggle('hidden');
+        resetAll();
+        startMenu.classList.toggle('hidden');
+        mainGame.classList.toggle('hidden');
+    }, 2000);
+
+    setTimeout(() => {
+        screeN.classList.toggle('hidden');
+        screeN.classList.toggle('start-ease');
+    }, 3000);
+});
+
+xMark.forEach(mark => {
+    mark.addEventListener('click', () => {
+        if (mark.id === 'aboutX') {
+            about.classList.toggle('hidden');
+        } else if (mark.id === 'toSMX') {
+            toSM.classList.toggle('hidden');
+        };
+    });
+})
+
 //close when click outside
 window.onclick = (e) => {
     if (isWindowOn) {
-        if (headerBar.contains(e.target) || !headerMenu.contains(e.target)) {
+        if (headerBar.contains(e.target) || !headerMenu.contains(e.target) 
+            && !about.contains(e.target) && !toSM.contains(e.target)) {
             headerMenu.classList.toggle('hidden');
             isWindowOn = false;
         };

@@ -35,16 +35,41 @@
     <main class="hidden">
         <div id="kaiji"></div>
 
+        <!-- Header -->
         <header>
             <h1 lang="ja">限定ジャンケン Genteijanken</h1>
             <i class="fa-solid fa-bars link"></i>
             <ul class="hidden">
                 <li id="aboutBtn" class="link">About</li>
                 <li id="startMenuBtn" class="link">Start Menu</li>
-                <li class="link"><a href="" target="_blank">Github</a></li>
+                <li class="link"><a href="https://github.com/nekohamuchan/Genteijanken" rel="noopener noreferrer" target="_blank">Github</a></li>
                 <li id="volBtn" class="link"><i id="volIcon" class="fa-solid fa-volume-high"></i></li>
             </ul>
         </header>
+
+        <div class="about hidden">
+            <div>
+                <i id="aboutX" class="fa-solid fa-xmark link"></i>
+                <p>
+                    This is a personal project for code learning. 
+                    I made this because I like Kaiji.
+                    <br><br>
+                    If you need, please contact me at c89312@gmail.com
+                </p>
+            </div>
+        </div>
+
+        <div class="toSM hidden">
+            <div>
+                <i id="toSMX" class="fa-solid fa-xmark link"></i>
+                <p>
+                    Are you sure to go back to start menu?
+                    <br>
+                    (All of the process will be reset)
+                </p>
+                <button id="restart" type="button">Yes</button>
+            </div>
+        </div>
 
         <!-- Life section -->
         <div id="kaiji-lp" class="life-container">
