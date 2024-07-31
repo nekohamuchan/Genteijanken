@@ -82,6 +82,11 @@
     background: red;
   }
 
+  a {
+    color: white;
+    text-decoration: none;
+  }
+
 body {
     width: 100vw;
     height: 100vh;
@@ -174,6 +179,7 @@ main::after {
 .start-menu > ul {
     list-style-type: none;
     position: inherit;
+    z-index: 5;
     font-size: 30px;
     left: 100px;
     bottom: 160px;
@@ -297,7 +303,7 @@ header > ul > li {
     animation-fill-mode: forwards;
 }
 
-.link:hover {
+.link:hover, a:hover {
     text-shadow: red 0 0 5px;;
     color: red;
     transition: 0.1s;

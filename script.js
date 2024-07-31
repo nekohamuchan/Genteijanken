@@ -593,6 +593,43 @@ window.addEventListener('keydown', (e) => {
 //header
 const headerBar = document.querySelector('.fa-bars');
 const headerMenu = document.querySelector('header > ul');
+let isWindowOn = false;
+const windowOn = () => {
+    setTimeout(() => {
+        isWindowOn = true;
+    }, 10);
+};
+
 headerBar.addEventListener('click', () => {
-    headerMenu.classList.toggle('hidden');
-})
+    if (!isWindowOn) {
+        headerMenu.classList.toggle('hidden');
+        windowOn();
+    };
+});
+
+const volBtn = document.getElementById('volBtn');
+const volIcon = document.getElementById('volIcon');
+
+volBtn.addEventListener('click', () => {
+    if (isAudioOpen) {
+        stopAudio(bgm);
+        isAudioOpen = false;
+        volIcon.classList.remove('fa-volume-high');
+        volIcon.classList.add('fa-volume-xmark');
+    } else if (!isAudioOpen) {
+        isAudioOpen = true;
+        playAudio(bgm);
+        volIcon.classList.remove('fa-volume-xmark');
+        volIcon.classList.add('fa-volume-high');
+    }
+});
+
+//close when click outside
+window.onclick = (e) => {
+    if (isWindowOn) {
+        if (headerBar.contains(e.target) || !headerMenu.contains(e.target)) {
+            headerMenu.classList.toggle('hidden');
+            isWindowOn = false;
+        };
+    };
+};
