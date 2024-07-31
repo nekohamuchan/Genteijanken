@@ -108,13 +108,12 @@ enBtn.addEventListener('click', () => {
     jpIcon.classList.add('fa-square');
 });
 
-jpBtn.addEventListener('click', () => {
+/*jpBtn.addEventListener('click', () => {
     jpIcon.classList.add('fa-square-check');
     jpIcon.classList.remove('fa-square');
     enIcon.classList.remove('fa-square-check');
     enIcon.classList.add('fa-square');
-});
-
+});*/
 
 //lives
 const kaijiStar = document.getElementById('kaiji-lp');
