@@ -13,19 +13,24 @@
 
     <!-- Start menu -->
     <div class="start-menu hidden">
-        <h1 lang="ja"><span>限定ジャンケン</span><br>
-            <span>Genteijanken</span></h1>
+        <h1 lang="ja">
+            <span>限定ジャンケン</span><br>
+            <span>Genteijanken</span>
+        </h1>
         <ul>
             <li id="start-button" class="link">Start</li>
             <li id="en-button" class="link">English</li>
             <li id="jp-button" class="link">日本語</li>
         </ul>
-        <div id="card">
-            <div class="front"></div>
-            <div class="back"></div>
+        <div>
+            <div id="card">
+                <div class="front"></div>
+                <div class="back"></div>
+            </div>
+            <div class="shadow"></div>
         </div>
-        <div class="shadow"></div>
     </div>
+
     <!-- Main game -->
     <main class="hidden">
         <div id="kaiji"></div>
@@ -35,9 +40,9 @@
             <i class="fa-solid fa-bars link"></i>
             <ul class="hidden">
                 <li id="aboutBtn" class="link">About</li>
-                <li class="link">Start Menu</li>
-                <li class="link">Github</li>
-                <li id="bgmBtn" class="link"><i id="bgmIcon" class="fa-solid fa-volume-high"></i></li>
+                <li id="startMenuBtn" class="link">Start Menu</li>
+                <li class="link"><a href="" target="_blank">Github</a></li>
+                <li id="muteBtn" class="link"><i id="volIcon" class="fa-solid fa-volume-high"></i></li>
             </ul>
         </header>
 
