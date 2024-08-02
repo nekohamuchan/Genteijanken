@@ -13,7 +13,7 @@ window.addEventListener('resize', () => {
 
 //audios
 let isAudioOpen = true;
-const audios = [
+const audio = [
     {
         name: 'bgm',
         src: new Audio('./sounds/Espoir.mp3'),
@@ -67,11 +67,15 @@ const audios = [
     }
 ];
 
+audio.forEach(song => {
+    song.src.muted = true;
+});
+
 const playAudio = (name) => {
     if (!isAudioOpen) {
         return;
     };
-    const song = audios.find(song => song.name === name);
+    const song = audio.find(song => song.name === name);
     song.src.volume = song.vol ? song.vol : 1;
     song.src.loop = song.loop ? song.loop : false;
     song.src.play();
@@ -80,7 +84,7 @@ const stopAudio = (name) => {
     if (!isAudioOpen) {
         return;
     };
-    const song = audios.find(song => song.name === name);
+    const song = audio.find(song => song.name === name);
     song.src.pause();
     song.src.currentTime = 0;
 };
@@ -720,8 +724,9 @@ xMark.forEach(mark => {
     });
 })
 
-//close when click outside
+
 window.onclick = (e) => {
+    //close when click outside
     if (isWindowOn) {
         if (headerBar.contains(e.target) || !headerMenu.contains(e.target) 
             && !about.contains(e.target) && !toStartMenu.contains(e.target)) {
@@ -730,4 +735,9 @@ window.onclick = (e) => {
             isWindowOn = false;
         };
     };
+
+    //unmute audio
+    audio.forEach(song => {
+        song.src.muted = false;
+    });
 };
