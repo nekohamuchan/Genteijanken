@@ -51,6 +51,7 @@ const stopAudio = audio => {
 
 const allBtn = document.querySelectorAll('.link, button');
 allBtn.forEach(btn => {
+    //btn sounds
     btn.addEventListener('mouseenter', () => {
         playAudio(hoverSFX);
         setTimeout(() => {
@@ -69,34 +70,34 @@ allBtn.forEach(btn => {
 //start menu
 const mainGame = document.querySelector('main');
 const startMenu = document.querySelector('.start-menu');
-const screeN = document.getElementById('screen');
+const transition = document.getElementById('transition');
 const startBtn = document.getElementById('start-button');
 const enBtn = document.getElementById('en-button');
 const enIcon = document.querySelector('#en-button > i');
 const jpBtn = document.getElementById('jp-button');
 const jpIcon = document.querySelector('#jp-button > i');
 startMenu.classList.toggle('hidden');
-screeN.classList.toggle('hidden');
-screeN.classList.toggle('start-ease');
-screeN.classList.toggle('darken');
+transition.classList.toggle('hidden');
+transition.classList.toggle('start-ease');
+transition.classList.toggle('darken');
 
 setTimeout(() => {
-    screeN.classList.toggle('hidden');
-    screeN.classList.toggle('load');
+    transition.classList.toggle('hidden');
+    transition.classList.toggle('load');
 }, 2000);
 
 startBtn.addEventListener('click', () => {
     playAudio(boatSFX);
-    screeN.classList.toggle('hidden');
-    screeN.classList.toggle('start-ease');
+    transition.classList.toggle('hidden');
+    transition.classList.toggle('start-ease');
     setTimeout(() => {
         startMenu.classList.toggle('hidden');
         mainGame.classList.toggle('hidden');
         resizeElHeight();
     }, 2000);
     setTimeout(() => {
-        screeN.classList.toggle('hidden');
-        screeN.classList.toggle('start-ease');
+        transition.classList.toggle('hidden');
+        transition.classList.toggle('start-ease');
         playAudio(bgm);
     }, 3300);
 });
@@ -175,8 +176,8 @@ const showChoices = () => {
         cardChoices[2].style.display = 'none';
     };
     cardChoicesSection.classList.toggle('hidden');
-    screeN.classList.toggle('hidden');
-    screeN.classList.toggle('darken');
+    transition.classList.toggle('hidden');
+    transition.classList.toggle('darken');
     isShowing = true;
     cardChoices[0].style.pointerEvents = 'none';
     cardChoices[1].style.pointerEvents = 'none';
@@ -212,8 +213,8 @@ cardChoices.forEach(choice => {
         nextTxt(txtContents);
         isShowing = false;
         cardChoicesSection.classList.toggle('hidden');
-        screeN.classList.toggle('hidden');
-        screeN.classList.toggle('darken');
+        transition.classList.toggle('hidden');
+        transition.classList.toggle('darken');
     });
 });
 
@@ -565,8 +566,8 @@ const resetAll = () => {
 
 replayBtn.forEach(btn => {
     btn.addEventListener('click', () => {
-        screeN.classList.toggle('hidden');
-        screeN.classList.toggle('start-ease');
+        transition.classList.toggle('hidden');
+        transition.classList.toggle('start-ease');
 
         setTimeout(() => {
             endScreen.classList.toggle('hidden');
@@ -582,15 +583,11 @@ replayBtn.forEach(btn => {
         }, 2000);
 
         setTimeout(() => {
-            screeN.classList.toggle('hidden');
-            screeN.classList.toggle('start-ease');
+            transition.classList.toggle('hidden');
+            transition.classList.toggle('start-ease');
         }, 3000);
     });
 });
-
-const test = () => {
-
-};
 
 text.textContent = txtContents[0].content;
 textBox.addEventListener('click', () => {
@@ -630,8 +627,8 @@ const volBtn = document.getElementById('volBtn');
 const volIcon = document.getElementById('volIcon');
 const aboutBtn = document.getElementById('aboutBtn');
 const about = document.querySelector('.about');
-const sMBTN = document.getElementById('startMenuBtn');
-const toSM = document.querySelector('.toSM');
+const toStartMenuBtn = document.getElementById('startMenuBtn');
+const toStartMenu = document.querySelector('.to-start-menu');
 const restartBtn = document.getElementById('restart');
 const xMark = document.querySelectorAll('.fa-xmark');
 
@@ -653,25 +650,25 @@ aboutBtn.addEventListener('click', () => {
     about.classList.toggle('hidden');
 });
 
-sMBTN.addEventListener('click', () => {
-    toSM.classList.toggle('hidden');
+toStartMenuBtn.addEventListener('click', () => {
+    toStartMenu.classList.toggle('hidden');
 });
 
 restartBtn.addEventListener('click', () => {
-    screeN.classList.toggle('hidden');
-    screeN.classList.toggle('start-ease');
+    transition.classList.toggle('hidden');
+    transition.classList.toggle('start-ease');
     stopAudio(bgm);
 
     setTimeout(() => {
-        toSM.classList.toggle('hidden');
+        toStartMenu.classList.toggle('hidden');
         resetAll();
         startMenu.classList.toggle('hidden');
         mainGame.classList.toggle('hidden');
     }, 2000);
 
     setTimeout(() => {
-        screeN.classList.toggle('hidden');
-        screeN.classList.toggle('start-ease');
+        transition.classList.toggle('hidden');
+        transition.classList.toggle('start-ease');
     }, 3000);
 });
 
@@ -679,8 +676,8 @@ xMark.forEach(mark => {
     mark.addEventListener('click', () => {
         if (mark.id === 'aboutX') {
             about.classList.toggle('hidden');
-        } else if (mark.id === 'toSMX') {
-            toSM.classList.toggle('hidden');
+        } else if (mark.id === 'to-start-menuX') {
+            toStartMenu.classList.toggle('hidden');
         };
     });
 })
@@ -689,7 +686,7 @@ xMark.forEach(mark => {
 window.onclick = (e) => {
     if (isWindowOn) {
         if (headerBar.contains(e.target) || !headerMenu.contains(e.target) 
-            && !about.contains(e.target) && !toSM.contains(e.target)) {
+            && !about.contains(e.target) && !toStartMenu.contains(e.target)) {
             headerMenu.classList.toggle('hidden');
             isWindowOn = false;
         };

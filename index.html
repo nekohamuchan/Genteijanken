@@ -8,8 +8,8 @@
     <title>限定ジャンケン Genteijanken</title>
 </head>
 <body>
-    <!-- Use for transition/dark screen -->
-    <div id="screen" class="start-ease darken load hidden"></div>
+    <!-- Use for transition -->
+    <div id="transition" class="start-ease darken load hidden"></div>
 
     <!-- Start menu -->
     <div class="start-menu hidden">
@@ -17,11 +17,13 @@
             <span>限定ジャンケン</span><br>
             <span>Genteijanken</span>
         </h1>
+
         <ul>
             <li id="start-button" class="link">Start</li>
             <li id="en-button" class="link"><i class="fa-regular fa-square-check"></i>English</li>
             <li id="jp-button" class="link" style="text-decoration: line-through;"><i class="fa-regular fa-square"></i>日本語</li>
         </ul>
+
         <div>
             <div id="card">
                 <div class="front"></div>
@@ -59,9 +61,9 @@
             </div>
         </div>
 
-        <div class="toSM hidden">
+        <div class="to-start-menu hidden">
             <div>
-                <i id="toSMX" class="fa-solid fa-xmark link"></i>
+                <i id="to-start-menuX" class="fa-solid fa-xmark link"></i>
                 <p>
                     Are you sure to go back to start menu?
                     <br>
