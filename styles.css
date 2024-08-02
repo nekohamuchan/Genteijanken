@@ -559,14 +559,12 @@ header > i {
     position: relative;
     animation-name: reveal, down;
     animation-duration: 2s;
-    animation-iteration-count: 1;
 }
 
 #player-card {
     position: relative;
     animation-name: reveal, up;
     animation-duration: 2s;
-    animation-iteration-count: 1;
 }
 
 /* End */

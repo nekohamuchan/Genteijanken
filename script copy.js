@@ -177,32 +177,14 @@ const addStar = (who) => {
     }, 1000);
 };
 
-const playerWin = () => {
-    setTimeout(() => {
-        removeStar(kaijiStar, kaijiLive);
-    }, 500)
-    setTimeout(() => {
-        addStar(playerStar, playerLive);
-        kaijiLive--;
-        playerLive++;
-    }, 1300);
-    setTimeout(() => {
-        isEvent = false;
-    }, 1700);
+const addLife = () => {
+    kaijiLive--;
+    playerLive++;
 };
 
-const playerLose = () => {
-    setTimeout(() => {
-        removeStar(playerStar, playerLive);
-    }, 500)
-    setTimeout(() => {
-        addStar(kaijiStar, kaijiLive);
-        playerLive--;
-        kaijiLive++;
-    }, 1300);
-    setTimeout(() => {
-        isEvent = false;
-    }, 1700);
+const loseLife = () => {
+    playerLive--;
+    kaijiLive++;
 }
 
 //card
@@ -218,6 +200,7 @@ let scissorsNum = 4;
 let playerChoice = '';
 let kaijiChoice = '';
 
+let isShowing = false;
 const showChoices = () => {
     if (rockNum === 0) {
         cardChoices[0].style.display = 'none';
@@ -231,7 +214,7 @@ const showChoices = () => {
     cardChoicesSection.classList.toggle('hidden');
     transition.classList.toggle('hidden');
     transition.classList.toggle('darken');
-
+    isShowing = true;
     cardChoices[0].style.pointerEvents = 'none';
     cardChoices[1].style.pointerEvents = 'none';
     cardChoices[2].style.pointerEvents = 'none';
@@ -264,7 +247,7 @@ cardChoices.forEach(choice => {
                 break;
         };
         nextTxt(txtContents);
-
+        isShowing = false;
         cardChoicesSection.classList.toggle('hidden');
         transition.classList.toggle('hidden');
         transition.classList.toggle('darken');
@@ -299,44 +282,54 @@ const applyCardChoices = () => {
 
 let isReveal = false;
 const showReveal = () => {
-    isReveal = true;
     applyCardChoices();
     revealChoices.classList.toggle('hidden');
+    isReveal = true;
+    isShowing = true;
     setTimeout(() => {
-        isEvent = false;
-    }, 2000);
+        isShowing = false;
+    }, 2100);
 };
 
 const closeReveal = () => {
-    isReveal = false;
     revealChoices.classList.toggle('hidden');
 };
 
 const roundResult = () => {
-    txtContents[8].content = "It's a tie! Both are same!";
-    txtContents[9].content = "You lose! Kaiji beats Player!";
-    txtContents[10].content = "You win! Player beats Kaiji!";
     if (kaijiChoice === playerChoice) {
         //tie
-        txtContents[8].content = txtContents[8].content.replace("same", kaijiChoice);
-        line = 7;
-
+        txtContents[8].content = txtContents[8].content.replace("x", kaijiChoice);
+        txtLine = 7;
     } else if ((kaijiChoice === 'rock' && playerChoice === 'scissors') || 
     (kaijiChoice === 'paper' && playerChoice === 'rock') || 
     (kaijiChoice === 'scissors' && playerChoice === 'paper')) {
         //lose
-        txtContents[9].content = txtContents[9].content.replace("Kaiji", capFirst(kaijiChoice));
-        txtContents[9].content = txtContents[9].content.replace("Player", playerChoice);
-        line = 8;
-
+        txtContents[9].content = txtContents[9].content.replace("x", capFirst(kaijiChoice));
+        txtContents[9].content = txtContents[9].content.replace("y", playerChoice);
+        txtLine = 8;
+        setTimeout(() => {
+            removeStar(playerStar, playerLive);
+        }, 500)
+        setTimeout(() => {
+            addStar(kaijiStar, kaijiLive);
+            loseLife();
+        }, 1300);
     } else if ((playerChoice === 'rock' && kaijiChoice === 'scissors') || 
     (playerChoice === 'paper' && kaijiChoice === 'rock') || 
     (playerChoice === 'scissors' && kaijiChoice === 'paper')) {
         //win
-        txtContents[10].content = txtContents[10].content.replace("Kaiji", kaijiChoice);
-        txtContents[10].content = txtContents[10].content.replace("Player", capFirst(playerChoice));
-        line = 9;
+        txtContents[10].content = txtContents[10].content.replace("x", kaijiChoice);
+        txtContents[10].content = txtContents[10].content.replace("y", capFirst(playerChoice));
+        txtLine = 9;
+        setTimeout(() => {
+            removeStar(kaijiStar, kaijiLive);
+        }, 500)
+        setTimeout(() => {
+            addStar(playerStar, playerLive);
+            addLife();
+        }, 1300);
     };
+    nextTxt(txtContents);
 };
 
 const replayRound = () => {
@@ -347,6 +340,9 @@ const replayRound = () => {
         //back to choose card
         txtLine = 4; 
     };
+    txtContents[8].content = "It's a tie! Both are x!";
+    txtContents[9].content = "You lose! x beats y!";
+    txtContents[10].content = "You win! y beats x!";
 };
 
 //text
@@ -356,90 +352,87 @@ const capFirst = (str) => {
 
 const txtEng = [
     {
-        line: 0,
+        id: 0,
         content: "Welcome. Click or press enter to continue."
     },
     {
-        line: 1,
+        id: 1,
         content: "This is Genteijanken. It's basically rock, paper, scissors but with lives and limit cards."
     },
     {
-        line: 2,
+        id: 2,
         content: "There are 4 cards of each type, which are consumed every time a card is played. The right-bottom stars is your lives. Game over if you lose all of your stars or cards."
     },
     {
-        line: 3,
+        id: 3,
         content: "Try to compete Kaiji and win the game!"
     },
     {
-        line: 4,
+        id: 4,
         content: "Game start!"
     },
     {
-        line: 5,
+        id: 5,
         content: "Choose your card."
     },
     {
-        line: 6,
+        id: 6,
         content: "Set."
     },
     {
-        line: 7,
+        id: 7,
         content: "Open!"
     },
     {
-        line: 8,
-        content: "It's a tie! Both are same!"
+        id: 8,
+        content: "It's a tie! Both are x!"
     },
     {
-        line: 9,
-        content: "You lose! Kaiji beats Player!"
+        id: 9,
+        content: "You lose! x beats y!"
     },
     {
-        line: 10,
-        content: "You win! Player beats Kaiji!"
+        id: 10,
+        content: "You win! y beats x!"
     },
     {
-        line: 11,
+        id: 11,
         content: "Current status. Prepare for next round."
     },
     {
-        line: 12,
+        id: 12,
         content: "Congratulations! You win the game!"
     },
     {
-        line: 13,
+        id: 13,
         content: "You lose! You've lose all of your lives!"
     },
     {
-        line: 14,
+        id: 14,
         content: "You lose! You've run out all of your cards!"
     },
     {
-        line: 15,
+        id: 15,
         content: "Wanna try again?"
     },
 ];
 let txtContents = txtEng;
-let [{line}] = txtContents;
 
 const textBox = document.getElementById('text-box');
 const text = document.getElementById('text');
 const txtEnd = document.querySelector('.sparkle');
-
 let isAllTyped = true;
-let isDelay = false;
-let isEvent = false;
+
 let txtSpeed = 30;
-let typeTxtInterval;
 const typeTxt = (msg) => {
-    isAllTyped = false;
     text.textContent = '';
     txtEnd.style.display = 'none';
+    isAllTyped = false;
     let i = 0;
     playAudio('txtSFX');
-    typeTxtInterval = setInterval(msg => {
+    window.txtTyping = setInterval(msg => {
         if (i === msg.length) {
+            delayNext(700);
             cancelType();
             return;
         };
@@ -449,116 +442,110 @@ const typeTxt = (msg) => {
 
 const cancelType = () => {
     txtEnd.style.display = 'inline-block';
-    stopAudio('txtSFX');
     isAllTyped = true;
+    stopAudio('txtSFX');
+    clearInterval(window.txtTyping);
+};
+
+let isDelay = false;
+const delayNext = (time) => {
     isDelay = true;
     setTimeout(() => {
         isDelay = false;
-    }, 400);
-    clearInterval(typeTxtInterval);
+    }, time);
 };
 
+let txtLine = 0;
 const nextTxt = (contents) => {
-    if (isDelay || line >= contents.length - 1) {
+    if (isDelay) {
         return;
     };
 
-    if (isAllTyped && !isEvent) {
-        typeTxt(contents[++line].content);
+    if (isAllTyped) {
+        if (isTxtOver || isGameOver) {
+            return;
+        };
+        typeTxt(contents[++txtLine].content);
+
+        //end dialogue
+        if (txtLine >= 8 &&
+            (kaijiLive <= 0 || playerLive <= 0 || 
+            (rockNum === 0 && paperNum === 0 && scissorsNum === 0))) {
+            isGameOver = true;
+        };
     } else {
         cancelType();
         text.textContent = '';
-        text.textContent = contents[line].content;
+        text.textContent = contents[txtLine].content;
+        delayNext(700);
     };
+
+    txtOver(contents);
 };
 
-const changeLine = () => {
-    if (!isAllTyped || isDelay || isEvent) {
-        return;
+let isTxtOver = false;
+const txtOver = (contents) => {
+    if (txtLine >= contents.length - 1) {
+        isTxtOver = true;
+    } else {
+        isTxtOver = false;
     };
-
-    if (line === 7) {
-        roundResult();
-        return;
-    };
-
-    if (line === 8 || line === 9 || line === 10) {
-        //check game over
-        if (kaijiLive <= 0 || playerLive <= 0 || 
-            (rockNum === 0 && paperNum === 0 && scissorsNum === 0)) {
-            gameOver();
-            return;
-        };
-        //return to current status
-        line = 10;
-        return;
-    };
-
-    if (line === 11) {
-        //return to choose card
-        line = 4;
-        return;
-    };
-
-    if (isGameOver) {
-        replayCheck();
-    };
-};
-
-const checkEvent = () => {
-    //prevent firing again
-    if (isDelay || isEvent) {
-        return;
-    }
-
-    if (line === 5) {
-        showChoices();
-    };
-
-    if (line === 7) {
-        isEvent = true;
-        showReveal();
-    };
-
-    if (line !== 7 && isReveal) {
-        closeReveal();
-    };
-
-    if (line === 9) {
-        isEvent = true;
-        playerLose();
-    };
-
-    if (line === 10) {
-        isEvent = true;
-        playerWin();
-    };
-};
-
-const game = () => {
-    changeLine();
-    nextTxt(txtContents);
-    checkEvent();
 };
 
 let isGameOver = false;
 const gameOver = () => {
-    isGameOver = true;
-    stopAudio('bgm');
+    if (!isAllTyped || isDelay || isGameOver || txtLine <= 8) {
+        return;
+    };
+    
     //player win
     if (kaijiLive <= 0) {
-        line = 11;
+        txtLine = 11;
+        stopAudio('bgm');
         playAudio('clapSFX');
-        return;
     };
     //player lose
-    if (playerLive <= 0) {
-        line = 12;
-        return;
-    } else if (rockNum === 0 && paperNum === 0 && scissorsNum === 0) {
-        line = 13;
+    if (playerLive <= 0 || (rockNum === 0 && paperNum === 0 && scissorsNum === 0)) {
+        stopAudio('bgm');
+        if (playerLive <= 0) {
+            txtLine = 12;
+        } else if (rockNum === 0 && paperNum === 0 && scissorsNum === 0) {
+            txtLine = 13;
+        };
+    };
+};
+
+const game = () => {
+    if (isShowing || isDelay) {
         return;
     };
+
+
+    if (isReveal && txtLine === 7) {
+        closeReveal();
+        isReveal = false;
+    };
+
+    if (txtLine === 7 && isAllTyped) {
+        roundResult();
+        return;
+    };
+
+    if ((txtLine === 8 || txtLine === 9 || txtLine === 10) && isAllTyped) {
+        replayRound();
+    };
+    
+    nextTxt(txtContents);
+    
+    if (txtLine === 11 && isAllTyped) {
+        replayRound();
+    };
+    if (txtLine === 5) {
+        showChoices();
+    };
+    if (txtLine === 7) {
+        showReveal();
+    }; 
 };
 
 //end screens
@@ -567,10 +554,18 @@ const replayScreen = document.querySelector('.replay-div');
 const replayBtn = document.querySelectorAll('.replay-div > button');
 
 const replayCheck = () => {
-    line = 14;
-    textBox.style.pointerEvents = 'none';   
-    endScreen.classList.toggle('hidden');
-    replayScreen.classList.toggle('hidden');
+    if (isDelay || !isGameOver) {
+        return;
+    };
+
+    if (isGameOver && isAllTyped && txtLine >= 12) {
+        isGameOver = false;
+        txtLine = 14;
+        textBox.style.pointerEvents = 'none';
+        
+        endScreen.classList.toggle('hidden');
+        replayScreen.classList.toggle('hidden');
+    };
 };
 
 const resetAll = () => {
@@ -600,7 +595,7 @@ const resetAll = () => {
     //txt
     isTxtOver = false;
     isGameOver = false;
-    line = 0;
+    txtLine = 0;
     text.textContent = txtContents[0].content;
     textBox.style.pointerEvents = 'auto';
 };
@@ -632,12 +627,16 @@ replayBtn.forEach(btn => {
 
 text.textContent = txtContents[0].content;
 textBox.addEventListener('click', () => {
+    gameOver();
+    replayCheck();
     game();
 });
 
 window.addEventListener('keydown', (e) => {
     switch (e.key) {
         case 'Enter':
+            gameOver();
+            replayCheck();
             game();
             break;
     };
