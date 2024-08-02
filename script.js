@@ -67,10 +67,6 @@ const audio = [
     }
 ];
 
-audio.forEach(song => {
-    song.src.muted = true;
-});
-
 const playAudio = (name) => {
     if (!isAudioOpen) {
         return;
@@ -78,7 +74,9 @@ const playAudio = (name) => {
     const song = audio.find(song => song.name === name);
     song.src.volume = song.vol ? song.vol : 1;
     song.src.loop = song.loop ? song.loop : false;
-    song.src.play();
+    song.src.play().catch(error => {
+        console.log('Chrome cannot play sound without user interaction first');
+    });
 };
 const stopAudio = (name) => {
     if (!isAudioOpen) {
@@ -735,9 +733,4 @@ window.onclick = (e) => {
             isWindowOn = false;
         };
     };
-
-    //unmute audio
-    audio.forEach(song => {
-        song.src.muted = false;
-    });
 };
