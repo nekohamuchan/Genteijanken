@@ -12,7 +12,7 @@ window.addEventListener('resize', () => {
 })
 
 //audios
-let isAudioOpen = true;
+let audioOpened = true;
 const audio = [
     {
         name: 'bgm',
@@ -68,7 +68,7 @@ const audio = [
 ];
 
 const playAudio = (name) => {
-    if (!isAudioOpen) {
+    if (!audioOpened) {
         return;
     };
     const song = audio.find(song => song.name === name);
@@ -79,7 +79,7 @@ const playAudio = (name) => {
     });
 };
 const stopAudio = (name) => {
-    if (!isAudioOpen) {
+    if (!audioOpened) {
         return;
     };
     const song = audio.find(song => song.name === name);
@@ -179,7 +179,7 @@ const addStar = (who) => {
     }, 1000);
 };
 
-const playerWin = () => {
+const winRound = () => {
     setTimeout(() => {
         removeStar(kaijiStar, kaijiLive);
     }, 500)
@@ -189,11 +189,11 @@ const playerWin = () => {
         playerLive++;
     }, 1300);
     setTimeout(() => {
-        isEvent = false;
+        setEvent = false;
     }, 1700);
 };
 
-const playerLose = () => {
+const loseRound = () => {
     setTimeout(() => {
         removeStar(playerStar, playerLive);
     }, 500)
@@ -203,7 +203,7 @@ const playerLose = () => {
         kaijiLive++;
     }, 1300);
     setTimeout(() => {
-        isEvent = false;
+        setEvent = false;
     }, 1700);
 }
 
@@ -299,22 +299,22 @@ const applyCardChoices = () => {
     }, 1190);
 };
 
-let isReveal = false;
+let revealed = false;
 const showReveal = () => {
-    isReveal = true;
+    revealed = true;
     applyCardChoices();
     revealChoices.classList.toggle('hidden');
     setTimeout(() => {
-        isEvent = false;
+        setEvent = false;
     }, 2000);
 };
 
 const closeReveal = () => {
-    isReveal = false;
+    revealed = false;
     revealChoices.classList.toggle('hidden');
 };
 
-const roundResult = () => {
+const showRoundResult = () => {
     txtContents[8].content = "It's a tie! Both are same!";
     txtContents[9].content = "You lose! Kaiji beats Player!";
     txtContents[10].content = "You win! Player beats Kaiji!";
@@ -338,16 +338,6 @@ const roundResult = () => {
         txtContents[10].content = txtContents[10].content.replace("Kaiji", kaijiChoice);
         txtContents[10].content = txtContents[10].content.replace("Player", capFirst(playerChoice));
         line = 9;
-    };
-};
-
-const replayRound = () => {
-    if (txtLine === 8 || txtLine === 9 || txtLine === 10) {
-        //round end
-        txtLine = 10;
-    } else if (txtLine === 11) {
-        //back to choose card
-        txtLine = 4; 
     };
 };
 
@@ -429,13 +419,13 @@ const textBox = document.getElementById('text-box');
 const text = document.getElementById('text');
 const txtEnd = document.querySelector('.sparkle');
 
-let isAllTyped = true;
-let isDelay = false;
-let isEvent = false;
+let allTyped = true;
+let delayed = false;
+let setEvent = false;
 let txtSpeed = 30;
 let typeTxtInterval;
 const typeTxt = (msg) => {
-    isAllTyped = false;
+    allTyped = false;
     text.textContent = '';
     txtEnd.style.display = 'none';
     let i = 0;
@@ -452,20 +442,20 @@ const typeTxt = (msg) => {
 const cancelType = () => {
     txtEnd.style.display = 'inline-block';
     stopAudio('txtSFX');
-    isAllTyped = true;
-    isDelay = true;
+    allTyped = true;
+    delayed = true;
     setTimeout(() => {
-        isDelay = false;
+        delayed = false;
     }, 400);
     clearInterval(typeTxtInterval);
 };
 
 const nextTxt = (contents) => {
-    if (isDelay || line >= contents.length - 1) {
+    if (delayed || line >= contents.length - 1) {
         return;
     };
 
-    if (isAllTyped && !isEvent) {
+    if (allTyped && !setEvent) {
         typeTxt(contents[++line].content);
     } else {
         cancelType();
@@ -475,12 +465,12 @@ const nextTxt = (contents) => {
 };
 
 const changeLine = () => {
-    if (!isAllTyped || isDelay || isEvent) {
+    if (!allTyped || delayed || setEvent) {
         return;
     };
 
     if (line === 7) {
-        roundResult();
+        showRoundResult();
         return;
     };
 
@@ -502,14 +492,14 @@ const changeLine = () => {
         return;
     };
 
-    if (isGameOver) {
-        replayCheck();
+    if (setGameOver) {
+        checkReplay();
     };
 };
 
 const checkEvent = () => {
     //prevent firing again
-    if (isDelay || isEvent) {
+    if (delayed || setEvent) {
         return;
     }
 
@@ -518,22 +508,22 @@ const checkEvent = () => {
     };
 
     if (line === 7) {
-        isEvent = true;
+        setEvent = true;
         showReveal();
     };
 
-    if (line !== 7 && isReveal) {
+    if (line !== 7 && revealed) {
         closeReveal();
     };
 
     if (line === 9) {
-        isEvent = true;
-        playerLose();
+        setEvent = true;
+        loseRound();
     };
 
     if (line === 10) {
-        isEvent = true;
-        playerWin();
+        setEvent = true;
+        winRound();
     };
 };
 
@@ -543,9 +533,9 @@ const game = () => {
     checkEvent();
 };
 
-let isGameOver = false;
+let setGameOver = false;
 const gameOver = () => {
-    isGameOver = true;
+    setGameOver = true;
     stopAudio('bgm');
     //player win
     if (kaijiLive <= 0) {
@@ -568,7 +558,7 @@ const endScreen = document.querySelector('.end');
 const replayScreen = document.querySelector('.replay-div');
 const replayBtn = document.querySelectorAll('.replay-div > button');
 
-const replayCheck = () => {
+const checkReplay = () => {
     line = 14;
     textBox.style.pointerEvents = 'none';   
     endScreen.classList.toggle('hidden');
@@ -601,7 +591,7 @@ const resetAll = () => {
     cardChoices[2].style.display = 'block';
     //txt
     isTxtOver = false;
-    isGameOver = false;
+    setGameOver = false;
     line = 0;
     text.textContent = txtContents[0].content;
     textBox.style.pointerEvents = 'auto';
@@ -648,15 +638,15 @@ window.addEventListener('keydown', (e) => {
 //header
 const headerBar = document.querySelector('.fa-bars');
 const headerMenu = document.querySelector('header > ul');
-let isWindowOn = false;
+let windowOpened = false;
 const windowOn = () => {
     setTimeout(() => {
-        isWindowOn = true;
+        windowOpened = true;
     }, 10);
 };
 
 headerBar.addEventListener('click', () => {
-    if (!isWindowOn) {
+    if (!windowOpened) {
         headerMenu.classList.toggle('hidden');
         textBox.style.pointerEvents = 'none';
         windowOn();
@@ -673,13 +663,13 @@ const restartBtn = document.getElementById('restart');
 const xMark = document.querySelectorAll('.fa-xmark');
 
 volBtn.addEventListener('click', () => {
-    if (isAudioOpen) {
+    if (audioOpened) {
         stopAudio('bgm');
-        isAudioOpen = false;
+        audioOpened = false;
         volIcon.classList.remove('fa-volume-high');
         volIcon.classList.add('fa-volume-xmark');
-    } else if (!isAudioOpen) {
-        isAudioOpen = true;
+    } else if (!audioOpened) {
+        audioOpened = true;
         playAudio('bgm');
         volIcon.classList.remove('fa-volume-xmark');
         volIcon.classList.add('fa-volume-high');
@@ -725,12 +715,12 @@ xMark.forEach(mark => {
 
 window.onclick = (e) => {
     //close when click outside
-    if (isWindowOn) {
+    if (windowOpened) {
         if (headerBar.contains(e.target) || !headerMenu.contains(e.target) 
             && !about.contains(e.target) && !toStartMenu.contains(e.target)) {
             headerMenu.classList.toggle('hidden');
             textBox.style.pointerEvents = 'auto';
-            isWindowOn = false;
+            windowOpened = false;
         };
     };
 };
