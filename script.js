@@ -13,56 +13,92 @@ window.addEventListener('resize', () => {
 
 //audios
 let isAudioOpen = true;
-const bgm = new Audio('./sounds/Espoir.mp3');
-bgm.volume = 0.2;
-bgm.loop = true;
-const txtSFX = new Audio('./sounds/text-scroll-1.mp3');
-txtSFX.loop = true;
-const cardSFX1 = new Audio('./sounds/card-choose.mp3');
-const cardSFX2 = new Audio('./sounds/card-open.mp3');
-cardSFX1.volume = 0.7;
-cardSFX2.volume = 0.7;
-const starSFX1 = new Audio('./sounds/swish1_1.mp3');
-const starSFX2 = new Audio('./sounds/poka01.mp3');
-starSFX1.volume = 0.4;
-starSFX2.volume = 0.4;
-const clapSFX = new Audio('./sounds/short_clap2.mp3');
-clapSFX.volume = 0.5;
-const selectSFX = new Audio('./sounds/select.mp3');
-const hoverSFX = new Audio('./sounds/hover.mp3');
-selectSFX.volume = 0.8;
-hoverSFX.volume = 0.8;
-const boatSFX = new Audio('./sounds/boat_whistle.mp3');
-boatSFX.volume = 0.9;
+const audios = [
+    {
+        name: 'bgm',
+        src: new Audio('./sounds/Espoir.mp3'),
+        vol: 0.2,
+        loop: true,
+    },
+    {
+        name: 'txtSFX',
+        src: new Audio('./sounds/text-scroll-1.mp3'),
+        loop: true,
+    },
+    {
+        name: 'cardChooseSFX',
+        src: new Audio('./sounds/card-choose.mp3'),
+        vol: 0.7,
+    },
+    {
+        name: 'cardOpenSFX',
+        src: new Audio('./sounds/card-open.mp3'),
+        vol: 0.7,
+    },
+    {
+        name: 'removeStarSFX',
+        src: new Audio('./sounds/swish1_1.mp3'),
+        vol: 0.4,
+    },
+    {
+        name: 'addStarSFX',
+        src: new Audio('./sounds/swish1_1.mp3'),
+        vol: 0.4,
+    },
+    {
+        name: 'clapSFX',
+        src: new Audio('./sounds/short_clap2.mp3'),
+        vol: 0.5,
+    },
+    {
+        name: 'selectSFX',
+        src: new Audio('./sounds/select.mp3'),
+        vol: 0.8,
+    },
+    {
+        name: 'hoverSFX',
+        src: new Audio('./sounds/hover.mp3'),
+        vol: 0.8,
+    },
+    {
+        name: 'boatSFX',
+        src: new Audio('./sounds/boat_whistle.mp3'),
+        vol: 0.9,
+    }
+];
 
-const playAudio = audio => {
+const playAudio = (name) => {
     if (!isAudioOpen) {
         return;
     };
-    audio.play();
+    const song = audios.find(song => song.name === name);
+    song.src.volume = song.vol ? song.vol : 1;
+    song.src.loop = song.loop ? song.loop : false;
+    song.src.play();
 };
-const stopAudio = audio => {
+const stopAudio = (name) => {
     if (!isAudioOpen) {
         return;
-    }
-    audio.pause();
-    audio.currentTime = 0;
+    };
+    const song = audios.find(song => song.name === name);
+    song.src.pause();
+    song.src.currentTime = 0;
 };
 
 const allBtn = document.querySelectorAll('.link, button');
 allBtn.forEach(btn => {
     //btn sounds
     btn.addEventListener('mouseenter', () => {
-        playAudio(hoverSFX);
+        playAudio('hoverSFX');
         setTimeout(() => {
-            stopAudio(hoverSFX);
+            stopAudio('hoverSFX');
         }, 150);
     });
 
     btn.addEventListener('click', () => {
-        playAudio(selectSFX);
+        playAudio('selectSFX');
         setTimeout(() => {
-            stopAudio(selectSFX);
+            stopAudio('selectSFX');
         }, 400);
     });
 });
@@ -87,7 +123,7 @@ setTimeout(() => {
 }, 2000);
 
 startBtn.addEventListener('click', () => {
-    playAudio(boatSFX);
+    playAudio('boatSFX');
     transition.classList.toggle('hidden');
     transition.classList.toggle('start-ease');
     setTimeout(() => {
@@ -98,7 +134,7 @@ startBtn.addEventListener('click', () => {
     setTimeout(() => {
         transition.classList.toggle('hidden');
         transition.classList.toggle('start-ease');
-        playAudio(bgm);
+        playAudio('bgm');
     }, 3300);
 });
 
@@ -124,7 +160,7 @@ let playerLive = 3;
 
 const removeStar = (who) => {
     who.lastElementChild.classList.add('remove-star');
-    playAudio(starSFX1);
+    playAudio('removeStarSFX');
     setTimeout(() => {
         who.removeChild(who.lastElementChild);
     }, 1000);
@@ -135,7 +171,7 @@ const addStar = (who) => {
     liveP.classList.add('life-point');
     who.append(liveP);
     liveP.classList.add('add-star');
-    playAudio(starSFX2);
+    playAudio('addStarSFX');
     setTimeout(() => {
         liveP.classList.remove('add-star');
     }, 1000);
@@ -191,13 +227,13 @@ const showChoices = () => {
 
 cardChoices.forEach(choice => {
     choice.addEventListener('mouseenter', () => {
-        playAudio(hoverSFX);
+        playAudio('hoverSFX');
         setTimeout(() => {
-            stopAudio(hoverSFX);
+            stopAudio('hoverSFX');
         }, 150);
     });
     choice.addEventListener('click', () => {
-        playAudio(cardSFX1);
+        playAudio('cardChooseSFX');
         playerChoice = choice.id;
         switch (choice.id) {
             case 'rock':
@@ -238,7 +274,7 @@ const applyCardChoices = () => {
     playerCard.className = 'card';
     getKaijiChoice();
     setTimeout(() => {
-        playAudio(cardSFX2);
+        playAudio('cardOpenSFX');
         kaijiCard.classList.add(kaijiChoice);
         playerCard.classList.add(playerChoice);
     }, 1190);
@@ -393,7 +429,7 @@ const typeTxt = (msg) => {
     txtEnd.style.display = 'none';
     isAllTyped = false;
     let i = 0;
-    playAudio(txtSFX);
+    playAudio('txtSFX');
     window.txtTyping = setInterval(msg => {
         if (i === msg.length) {
             delayNext(700);
@@ -407,7 +443,7 @@ const typeTxt = (msg) => {
 const cancelType = () => {
     txtEnd.style.display = 'inline-block';
     isAllTyped = true;
-    stopAudio(txtSFX);
+    stopAudio('txtSFX');
     clearInterval(window.txtTyping);
 };
 
@@ -465,12 +501,12 @@ const gameOver = () => {
     //player win
     if (kaijiLive <= 0) {
         txtLine = 11;
-        stopAudio(bgm);
-        playAudio(clapSFX);
+        stopAudio('bgm');
+        playAudio('clapSFX');
     };
     //player lose
     if (playerLive <= 0 || (rockNum === 0 && paperNum === 0 && scissorsNum === 0)) {
-        stopAudio(bgm);
+        stopAudio('bgm');
         if (playerLive <= 0) {
             txtLine = 12;
         } else if (rockNum === 0 && paperNum === 0 && scissorsNum === 0) {
@@ -574,7 +610,7 @@ replayBtn.forEach(btn => {
             replayScreen.classList.toggle('hidden');
             resetAll();
             if (btn.id === 'replay-yes') {
-                playAudio(bgm);
+                playAudio('bgm');
             }
             if (btn.id === 'replay-no') {
                 startMenu.classList.toggle('hidden');
@@ -619,6 +655,7 @@ const windowOn = () => {
 headerBar.addEventListener('click', () => {
     if (!isWindowOn) {
         headerMenu.classList.toggle('hidden');
+        textBox.style.pointerEvents = 'none';
         windowOn();
     };
 });
@@ -634,13 +671,13 @@ const xMark = document.querySelectorAll('.fa-xmark');
 
 volBtn.addEventListener('click', () => {
     if (isAudioOpen) {
-        stopAudio(bgm);
+        stopAudio('bgm');
         isAudioOpen = false;
         volIcon.classList.remove('fa-volume-high');
         volIcon.classList.add('fa-volume-xmark');
     } else if (!isAudioOpen) {
         isAudioOpen = true;
-        playAudio(bgm);
+        playAudio('bgm');
         volIcon.classList.remove('fa-volume-xmark');
         volIcon.classList.add('fa-volume-high');
     }
@@ -657,7 +694,7 @@ toStartMenuBtn.addEventListener('click', () => {
 restartBtn.addEventListener('click', () => {
     transition.classList.toggle('hidden');
     transition.classList.toggle('start-ease');
-    stopAudio(bgm);
+    stopAudio('bgm');
 
     setTimeout(() => {
         toStartMenu.classList.toggle('hidden');
@@ -688,6 +725,7 @@ window.onclick = (e) => {
         if (headerBar.contains(e.target) || !headerMenu.contains(e.target) 
             && !about.contains(e.target) && !toStartMenu.contains(e.target)) {
             headerMenu.classList.toggle('hidden');
+            textBox.style.pointerEvents = 'auto';
             isWindowOn = false;
         };
     };
