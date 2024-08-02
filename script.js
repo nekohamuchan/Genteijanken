@@ -11,59 +11,59 @@ window.addEventListener('resize', () => {
     resizeElHeight();
 })
 
-//audios
+//audio
 let audioOpened = true;
 const audio = [
     {
         name: 'bgm',
         src: new Audio('./sounds/Espoir.mp3'),
         vol: 0.2,
-        loop: true,
+        loop: true
     },
     {
         name: 'txtSFX',
-        src: new Audio('./sounds/text-scroll-1.mp3'),
-        loop: true,
+        src: new Audio('./sounds/text-scroll.mp3'),
+        loop: true
     },
     {
         name: 'cardChooseSFX',
         src: new Audio('./sounds/card-choose.mp3'),
-        vol: 0.7,
+        vol: 0.7
     },
     {
         name: 'cardOpenSFX',
         src: new Audio('./sounds/card-open.mp3'),
-        vol: 0.7,
+        vol: 0.7
     },
     {
         name: 'removeStarSFX',
         src: new Audio('./sounds/swish1_1.mp3'),
-        vol: 0.4,
+        vol: 0.4
     },
     {
         name: 'addStarSFX',
         src: new Audio('./sounds/swish1_1.mp3'),
-        vol: 0.4,
+        vol: 0.4
     },
     {
         name: 'clapSFX',
         src: new Audio('./sounds/short_clap2.mp3'),
-        vol: 0.5,
+        vol: 0.5
     },
     {
         name: 'selectSFX',
         src: new Audio('./sounds/select.mp3'),
-        vol: 0.8,
+        vol: 0.8
     },
     {
         name: 'hoverSFX',
         src: new Audio('./sounds/hover.mp3'),
-        vol: 0.8,
+        vol: 0.8
     },
     {
         name: 'boatSFX',
         src: new Audio('./sounds/boat_whistle.mp3'),
-        vol: 0.9,
+        vol: 0.9
     }
 ];
 
@@ -181,10 +181,10 @@ const addStar = (who) => {
 
 const winRound = () => {
     setTimeout(() => {
-        removeStar(kaijiStar, kaijiLive);
+        removeStar(kaijiStar);
     }, 500)
     setTimeout(() => {
-        addStar(playerStar, playerLive);
+        addStar(playerStar);
         kaijiLive--;
         playerLive++;
     }, 1300);
@@ -195,10 +195,10 @@ const winRound = () => {
 
 const loseRound = () => {
     setTimeout(() => {
-        removeStar(playerStar, playerLive);
+        removeStar(playerStar);
     }, 500)
     setTimeout(() => {
-        addStar(kaijiStar, kaijiLive);
+        addStar(kaijiStar);
         playerLive--;
         kaijiLive++;
     }, 1300);
@@ -342,10 +342,6 @@ const showRoundResult = () => {
 };
 
 //text
-const capFirst = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-};
-
 const txtEng = [
     {
         line: 0,
@@ -414,16 +410,24 @@ const txtEng = [
 ];
 let txtContents = txtEng;
 let [{line}] = txtContents;
-
 const textBox = document.getElementById('text-box');
 const text = document.getElementById('text');
 const txtEnd = document.querySelector('.sparkle');
-
 let allTyped = true;
 let delayed = false;
 let setEvent = false;
 let txtSpeed = 30;
 let typeTxtInterval;
+
+const capFirst = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+txtContents.forEach(msg => {
+    msg.content.replace(/(\r\n|\n|\r)/gm, '');
+    msg.content.replace(/\s\s+/g, ' ');
+});
+
 const typeTxt = (msg) => {
     allTyped = false;
     text.textContent = '';
