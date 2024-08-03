@@ -89,7 +89,6 @@ const stopAudio = (name) => {
 
 const allBtn = document.querySelectorAll('.link, button');
 allBtn.forEach(btn => {
-    //btn sounds
     btn.addEventListener('mouseenter', () => {
         playAudio('hoverSFX');
         setTimeout(() => {
@@ -119,23 +118,30 @@ transition.classList.toggle('hidden');
 transition.classList.toggle('start-ease');
 transition.classList.toggle('darken');
 
-setTimeout(() => {
+const startTransition = (type) => {
     transition.classList.toggle('hidden');
-    transition.classList.toggle('load');
+    transition.classList.toggle(type);
+};
+
+const endTransition = (type) => {
+    transition.classList.toggle('hidden');
+    transition.classList.toggle(type);
+};
+
+setTimeout(() => {
+    endTransition('load');
 }, 2000);
 
 startBtn.addEventListener('click', () => {
     playAudio('boatSFX');
-    transition.classList.toggle('hidden');
-    transition.classList.toggle('start-ease');
+    startTransition('start-ease');
     setTimeout(() => {
         startMenu.classList.toggle('hidden');
         mainGame.classList.toggle('hidden');
         resizeElHeight();
     }, 2000);
     setTimeout(() => {
-        transition.classList.toggle('hidden');
-        transition.classList.toggle('start-ease');
+        endTransition('start-ease');
         playAudio('bgm');
     }, 3300);
 });
@@ -231,8 +237,7 @@ const showChoices = () => {
         cardChoices[2].style.display = 'none';
     };
     cardChoicesSection.classList.toggle('hidden');
-    transition.classList.toggle('hidden');
-    transition.classList.toggle('darken');
+    startTransition('darken');
 
     cardChoices[0].style.pointerEvents = 'none';
     cardChoices[1].style.pointerEvents = 'none';
@@ -268,8 +273,7 @@ cardChoices.forEach(choice => {
         nextTxt(txtContents);
 
         cardChoicesSection.classList.toggle('hidden');
-        transition.classList.toggle('hidden');
-        transition.classList.toggle('darken');
+        endTransition('darken');
     });
 });
 
@@ -422,11 +426,6 @@ let typeTxtInterval;
 const capFirst = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 };
-
-txtContents.forEach(msg => {
-    msg.content.replace(/(\r\n|\n|\r)/gm, '');
-    msg.content.replace(/\s\s+/g, ' ');
-});
 
 const typeTxt = (msg) => {
     allTyped = false;
@@ -715,7 +714,6 @@ xMark.forEach(mark => {
         };
     });
 })
-
 
 window.onclick = (e) => {
     //close when click outside
