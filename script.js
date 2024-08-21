@@ -113,6 +113,7 @@ startMenu.classList.toggle('hidden');
 transition.classList.toggle('hidden');
 transition.classList.toggle('start-ease');
 transition.classList.toggle('darken');
+let startMenuOn = true;
 
 const startTransition = (type) => {
     transition.classList.toggle('hidden');
@@ -128,12 +129,34 @@ setTimeout(() => {
     endTransition('load');
 }, 2000);
 
+const startMenuCard = document.querySelector('.front');
+setTimeout(() => {
+    if (startMenuOn) {
+        setInterval(() => {
+            let randomFront = Math.floor(Math.random() * 3);
+            switch (randomFront) {
+                case 0:
+                    randomFront = `url(./imgs/rock.jpg)`;
+                    break;
+                case 1:
+                    randomFront = `url(./imgs/paper.jpg)`;
+                    break;
+                case 2:
+                    randomFront = `url(./imgs/scissors.jpg)`;
+                    break;
+            }
+            startMenuCard.style.backgroundImage = randomFront;
+        }, 5000);
+    };
+}, 2500);
+
 startBtn.addEventListener('click', () => {
     playAudio('boatSFX');
     startTransition('start-ease');
     setTimeout(() => {
         startMenu.classList.toggle('hidden');
         mainGame.classList.toggle('hidden');
+        startMenuOn = false;
         resizeElHeight();
     }, 2000);
     setTimeout(() => {
@@ -597,6 +620,7 @@ replayBtn.forEach(btn => {
             if (btn.id === 'replay-no') {
                 startMenu.classList.toggle('hidden');
                 mainGame.classList.toggle('hidden');
+                startMenuOn = true;
             };
         }, 2000);
 
@@ -679,6 +703,7 @@ restartBtn.addEventListener('click', () => {
         resetAll();
         startMenu.classList.toggle('hidden');
         mainGame.classList.toggle('hidden');
+        startMenuOn = true;
     }, 2000);
 
     setTimeout(() => {
