@@ -715,7 +715,7 @@ xMark.forEach(mark => {
     });
 })
 
-window.onclick = (e) => {
+window.addEventListener('click', e => {
     //close when click outside
     if (windowOpened) {
         if (headerBar.contains(e.target) || !headerMenu.contains(e.target) 
@@ -725,4 +725,4 @@ window.onclick = (e) => {
             windowOpened = false;
         };
     };
-};
+});
